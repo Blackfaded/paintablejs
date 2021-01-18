@@ -4,7 +4,7 @@ import styles from './App.module.css';
 
 function App() {
   const paintableRef = useRef<PaintableRef>(null);
-  const [color, setColor] = useState('black');
+  const [color, setColor] = useState('blue');
   const [active, setActive] = useState(false);
   const [thickness, setThickness] = useState(5);
   const [useEraser, setUseEraser] = useState(false);
@@ -36,7 +36,8 @@ function App() {
       </div>
 
       <Paintable
-        name="/"
+        width={1024}
+        height={768}
         active={active}
         color={color}
         thickness={thickness}
