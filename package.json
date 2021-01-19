@@ -2,15 +2,15 @@
   "name": "paintablejs",
   "version": "0.1.0",
   "private": true,
-  "main": "dist/js/index.js",
-  "module": "dist/esm/index.js",
-  "types": "dist/js/index.d.ts",
   "scripts": {
-    "build:all": "yarn build:core && yarn build:react",
+    "build:all": "yarn build:core && concurrently \"yarn build:react\" \"yarn build:vue\"",
     "build:core": "yarn workspace core build",
     "build:react": "yarn workspace react build",
+    "build:vue": "yarn workspace vue build",
+    "dev:all": "concurrently \"yarn dev:core\" \"yarn dev:react\" \"yarn dev:vue\"",
     "dev:core": "yarn workspace core dev",
     "dev:react": "yarn workspace react dev",
+    "dev:vue": "yarn workspace vue dev",
     "clean:dist": "node ./scripts/clearDist.js",
     "clean:modules": "rm -rf node_modules && rm -rf packages/**/*/node_modules",
     "reinstall": "yarn clean:dist && yarn clean:modules && yarn"
@@ -21,8 +21,7 @@
       "packages/examples/*"
     ]
   },
-  "nohoist": [
-    "**/@vue/cli-plugin-eslint",
-    "**/@vue/cli-plugin-eslint/**"
-  ]
+  "dependencies": {
+    "concurrently": "^5.3.0"
+  }
 }

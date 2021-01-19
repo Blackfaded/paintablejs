@@ -6,6 +6,8 @@ globby(
     'packages/dist/**/*',
     '!packages/dist/react',
     'packages/dist/react/**/*',
+    '!packages/dist/vue',
+    'packages/dist/vue/**/*',
     '!packages/dist/**/package.json',
   ],
   {
