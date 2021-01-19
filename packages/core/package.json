@@ -18,44 +18,15 @@
   "module": "dist/esm/index.js",
   "types": "dist/js/index.d.ts",
   "scripts": {
-    "test": "react-scripts test",
-    "build": "yarn build:babel && yarn build:types && node ./scripts/copyTS.js",
-    "build:babel": "concurrently \"yarn build:babel:esm && yarn build:babel:umd\" \"yarn build:babel:cjs\"",
-    "build:babel:cjs": "BABEL_ENV=cjs babel --source-maps --extensions \".js,.ts,.tsx\" src --out-dir ../dist/core/js --presets=@babel/env",
-    "build:babel:esm": "BABEL_ENV=esm babel --source-maps --extensions \".js,.ts,.tsx\" src --out-dir ../dist/core/esm",
-    "build:babel:umd": "BABEL_ENV=umd babel --source-maps --extensions \".js\" ../dist/core/esm --out-dir ../dist/core/umd --plugins=transform-es2015-modules-umd",
-    "build:types": "tsc -p tsconfig.gen-dts.json",
-    "dev": "yarn build:types && yarn build:babel:esm --skip-initial-build --watch --verbose"
-  },
-  "dependencies": {
-    "@types/jest": "^26.0.15",
-    "@types/node": "^14.14.21",
-    "typescript": "^4.0.3"
+    "dev": "rollup -c -w",
+    "build": "rollup -c"
   },
   "devDependencies": {
-    "@babel/cli": "^7.8.4",
-    "@babel/plugin-proposal-export-default-from": "^7.8.3",
-    "babel-plugin-transform-es2015-modules-umd": "^6.24.1",
-    "babel-plugin-typescript-to-proptypes": "^1.2.1",
-    "concurrently": "^5.1.0",
-    "node-sass": "^5.0.0"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "@rollup/plugin-commonjs": "^17.0.0",
+    "@rollup/plugin-node-resolve": "^11.1.0",
+    "rollup": "^2.37.0",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-typescript2": "^0.29.0",
+    "typescript": "^4.0.3"
   }
 }

@@ -144,9 +144,6 @@ export class Paintable {
 
   setUseEraser(useEraser: boolean) {
     this.useEraser = useEraser;
-    this.globalCompositeOperation = this.useEraser
-      ? 'destination-out'
-      : 'source-over';
   }
 
   setThickness(thickness: number) {
@@ -170,7 +167,9 @@ export class Paintable {
   }
 
   setDrawOptions() {
-    this.context.globalCompositeOperation = this.globalCompositeOperation;
+    this.context.globalCompositeOperation = this.useEraser
+      ? 'destination-out'
+      : 'source-over';
 
     this.context.lineWidth = this.useEraser
       ? this.thicknessEraser
@@ -284,12 +283,13 @@ export class Paintable {
 
   restoreCanvas(base64Image: string) {
     this.context.globalCompositeOperation = 'source-over';
+    this.context.shadowColor = this.color;
+    this.context.shadowBlur = 0;
     if (base64Image) {
       let image = new Image();
       image.onload = () => {
         this.context.clearRect(0, 0, this.width, this.height);
         this.context.drawImage(image, 0, 0);
-        this.context.globalCompositeOperation = this.globalCompositeOperation;
       };
       image.src = base64Image;
     }

@@ -61,7 +61,7 @@ export default class App extends Vue {
   paintable: null | Paintable = null;
 
   mounted() {
-    this.paintable = this.$refs.paintable as Paintable;
+    this.paintable = (this.$refs.paintable as unknown) as Paintable;
   }
 
   clear() {
