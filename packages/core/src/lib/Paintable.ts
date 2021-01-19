@@ -17,6 +17,7 @@ interface Options {
   thicknessEraser?: number;
   thickness?: number;
   color?: string;
+  smooth?: boolean;
   image?: string | null;
 }
 
@@ -27,17 +28,19 @@ export class Paintable {
   redoList: string[] = [];
   longPressTimer: any = null;
   isDrawing = false;
-
+  globalCompositeOperation = 'source-over';
   // options
   active: boolean;
+  width: number;
+  height: number;
 
   //optional options
   scaleFactor = 1;
   useEraser = false;
   thicknessEraser = 40;
   thickness: number = 10;
-  color: string = 'black';
-
+  color: string = '#000000';
+  smooth = false;
   // events
   events: EventEmitter;
   moveEvent: (e: any) => void;
@@ -52,8 +55,12 @@ export class Paintable {
     this.moveEvent = this.onDrawMove.bind(this);
     this.endEvent = this.onDrawEnd.bind(this);
 
-    this.setWidth(initialOptions.width);
-    this.setHeight(initialOptions.height);
+    this.width = initialOptions.width;
+    this.canvas.width = this.width;
+
+    this.height = initialOptions.height;
+    this.canvas.height = this.height;
+
     this.active = initialOptions.active;
 
     if (initialOptions.scaleFactor) {
@@ -61,19 +68,23 @@ export class Paintable {
     }
 
     if (initialOptions.useEraser) {
-      this.useEraser = initialOptions.useEraser;
+      this.setUseEraser(initialOptions.useEraser);
     }
 
     if (initialOptions.thicknessEraser) {
-      this.thicknessEraser = initialOptions.thicknessEraser;
+      this.setThicknessEraser(initialOptions.thicknessEraser);
     }
 
     if (initialOptions.thickness) {
-      this.thickness = initialOptions.thickness;
+      this.setThickness(initialOptions.thickness);
     }
 
     if (initialOptions.color) {
-      this.color = initialOptions.color;
+      this.setColor(initialOptions.color);
+    }
+
+    if (initialOptions.smooth) {
+      this.setSmooth(initialOptions.smooth);
     }
 
     if (initialOptions.image) {
@@ -85,6 +96,10 @@ export class Paintable {
     this.events = new EventEmitter();
   }
 
+  private isHexColor(color: string) {
+    return /^#([0-9A-F]{3}){1,2}$/i.test(color);
+  }
+
   private setStyle() {
     this.canvas.style.position = 'absolute';
     this.canvas.style.zIndex = this.active ? '9999' : '-10';
@@ -92,14 +107,14 @@ export class Paintable {
   }
 
   private registerEvents() {
-    this.canvas.removeEventListener('mousedown', this.startEvent);
-    this.canvas.removeEventListener('mousemove', this.moveEvent);
-    this.canvas.removeEventListener('mouseup', this.endEvent);
-    this.canvas.removeEventListener('mouseout', this.endEvent);
+    // this.canvas.removeEventListener('mousedown', this.startEvent);
+    // this.canvas.removeEventListener('mousemove', this.moveEvent);
+    // this.canvas.removeEventListener('mouseup', this.endEvent);
+    // this.canvas.removeEventListener('mouseout', this.endEvent);
 
-    this.canvas.removeEventListener('touchstart', this.startEvent);
-    this.canvas.removeEventListener('touchmove', this.moveEvent);
-    this.canvas.removeEventListener('touchend', this.endEvent);
+    // this.canvas.removeEventListener('touchstart', this.startEvent);
+    // this.canvas.removeEventListener('touchmove', this.moveEvent);
+    // this.canvas.removeEventListener('touchend', this.endEvent);
 
     this.canvas.addEventListener('mousedown', this.startEvent);
     this.canvas.addEventListener('mousemove', this.moveEvent);
@@ -111,16 +126,10 @@ export class Paintable {
     this.canvas.addEventListener('touchend', this.endEvent);
   }
 
-  private setWidth(width: number) {
-    this.canvas.width = width;
-  }
-
-  private setHeight(height: number) {
-    this.canvas.height = height;
-  }
-
   setColor(color: string) {
-    this.color = color;
+    if (this.isHexColor(color)) {
+      this.color = color;
+    }
   }
 
   setActive(active: boolean) {
@@ -135,14 +144,25 @@ export class Paintable {
 
   setUseEraser(useEraser: boolean) {
     this.useEraser = useEraser;
+    this.globalCompositeOperation = this.useEraser
+      ? 'destination-out'
+      : 'source-over';
   }
 
   setThickness(thickness: number) {
-    this.thickness = thickness;
+    if (thickness > 1) {
+      this.thickness = thickness;
+    }
   }
 
   setThicknessEraser(thicknessEraser: number) {
-    this.thicknessEraser = thicknessEraser;
+    if (thicknessEraser > 1) {
+      this.thicknessEraser = thicknessEraser;
+    }
+  }
+
+  setSmooth(smooth: boolean) {
+    this.smooth = smooth;
   }
 
   setImage(image: string) {
@@ -150,13 +170,16 @@ export class Paintable {
   }
 
   setDrawOptions() {
-    this.context.globalCompositeOperation = this.useEraser
-      ? 'destination-out'
-      : 'source-over';
+    this.context.globalCompositeOperation = this.globalCompositeOperation;
 
     this.context.lineWidth = this.useEraser
       ? this.thicknessEraser
+      : this.smooth
+      ? this.thickness - 2
       : this.thickness;
+
+    this.context.shadowColor = this.smooth ? `${this.color}80` : this.color;
+    this.context.shadowBlur = this.smooth ? 2 : 0;
 
     this.context.strokeStyle = this.color;
     this.context.lineCap = 'round';
@@ -186,6 +209,7 @@ export class Paintable {
       const mousePosition = this.getMousePosition(e);
 
       this.context.lineTo(mousePosition.x, mousePosition.y);
+
       this.context.stroke();
     }
   }
@@ -198,6 +222,7 @@ export class Paintable {
 
   startLongPressTimer() {
     const timerId = setTimeout(() => {
+      this.undoList = this.undoList.slice(0, -1);
       this.events.emit('longPress');
     }, 500);
     this.longPressTimer = timerId;
@@ -214,7 +239,6 @@ export class Paintable {
     this.undoList = [];
     this.redoList = [];
     const image = this.canvas.toDataURL();
-    console.log('save');
     this.events.emit('save', image);
   }
 
@@ -259,13 +283,36 @@ export class Paintable {
   }
 
   restoreCanvas(base64Image: string) {
+    this.context.globalCompositeOperation = 'source-over';
     if (base64Image) {
       let image = new Image();
       image.onload = () => {
-        this.context.clearRect(0, 0, 500, 400);
+        this.context.clearRect(0, 0, this.width, this.height);
         this.context.drawImage(image, 0, 0);
+        this.context.globalCompositeOperation = this.globalCompositeOperation;
       };
-      image.src = base64Image; // eslint-disable-line
+      image.src = base64Image;
     }
+  }
+
+  clearCanvas() {
+    if (!this.isCanvasBlank()) {
+      this.undoList = [...this.undoList, this.canvas.toDataURL()];
+      this.redoList = [];
+      this.context.clearRect(0, 0, this.width, this.height);
+    }
+  }
+
+  isCanvasBlank() {
+    const pixelBuffer = new Uint32Array(
+      this.context.getImageData(
+        0,
+        0,
+        this.canvas.width,
+        this.canvas.height
+      ).data.buffer
+    );
+
+    return !pixelBuffer.some((color) => color !== 0);
   }
 }

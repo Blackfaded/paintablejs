@@ -1,29 +1,112 @@
 <template>
-  <div id="app">
-    <Paintable :width="1024" :height="768" :active="true" />
+  <div id="main">
+    <div>
+      <button @click="clear">Clear</button>
+      <button @click="undo">Undo</button>
+      <button @click="redo">Redo</button>
+      <button @click="toggleEdit">
+        {{ active ? "save" : "edit" }}
+      </button>
+      <button @click="toggleEraser">
+        {{ useEraser ? "use pencil" : "use eraser" }}
+      </button>
+      <label>
+        Smooth:
+        <input type="checkbox" v-model="smooth" />
+      </label>
+      <input type="color" v-model="color" />
+      <input
+        type="range"
+        v-model.number="thickness"
+        :min="1"
+        :max="30"
+        :step="1"
+      />
+    </div>
+    <Paintable
+      ref="paintable"
+      :width="1024"
+      :height="768"
+      :active="active"
+      :color="color"
+      :smooth="smooth"
+      :thickness="thickness"
+      :useEraser="useEraser"
+      :image="image"
+      @longPress="onLongPress"
+      @save="onSave"
+    >
+      <div id="paintable-children">Test</div>
+    </Paintable>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 
 import { Paintable } from "paintablejs/vue";
-console.log(Paintable);
+
 @Component({
   components: {
     Paintable,
   },
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  useEraser = false;
+  color = "#FF0000";
+  thickness = 5;
+  active = false;
+  smooth = false;
+
+  paintable: null | Paintable = null;
+
+  mounted() {
+    this.paintable = this.$refs.paintable as Paintable;
+  }
+
+  clear() {
+    this.paintable?.clear();
+  }
+
+  undo() {
+    this.paintable?.undo();
+  }
+
+  redo() {
+    this.paintable?.redo();
+  }
+
+  get image() {
+    return localStorage.getItem("/");
+  }
+
+  onSave(image: string) {
+    localStorage.setItem("/", image);
+  }
+
+  onLongPress() {
+    console.log("longPress");
+  }
+
+  toggleEraser() {
+    this.useEraser = !this.useEraser;
+  }
+
+  toggleEdit() {
+    this.useEraser = false;
+    this.active = !this.active;
+  }
+}
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style lang="scss" scoped>
+#paintable-children {
+  background-color: green;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-</style>
+</style>>
+
