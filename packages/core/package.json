@@ -28,42 +28,17 @@
     "dev": "yarn build:types && yarn build:babel:esm --skip-initial-build --watch --verbose"
   },
   "dependencies": {
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
     "@types/jest": "^26.0.15",
-    "@types/node": "^12.0.0",
-    "@types/react": "^16.9.0",
-    "@types/react-dom": "^16.9.0",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "react-scripts": "4.0.1",
+    "@types/node": "^14.14.21",
     "typescript": "^4.0.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/plugin-proposal-export-default-from": "^7.8.3",
-    "@storybook/addon-actions": "^6.0.0-alpha.13",
-    "@storybook/addon-docs": "^6.0.0-alpha.13",
-    "@storybook/addon-info": "^6.0.0-alpha.2",
-    "@storybook/addon-links": "^6.0.0-alpha.13",
-    "@storybook/addons": "^6.0.0-alpha.13",
-    "@storybook/preset-create-react-app": "^1.5.2",
-    "@storybook/react": "^6.0.0-alpha.13",
-    "@types/enzyme": "^3.10.5",
-    "@types/enzyme-adapter-react-16": "^1.0.6",
     "babel-plugin-transform-es2015-modules-umd": "^6.24.1",
     "babel-plugin-typescript-to-proptypes": "^1.2.1",
-    "node-sass": "^4.14.1",
     "concurrently": "^5.1.0",
-    "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.2",
-    "enzyme-to-json": "^3.4.4",
-    "jest-enzyme": "^7.1.2"
-  },
-  "peerDependencies": {
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0"
+    "node-sass": "^5.0.0"
   },
   "eslintConfig": {
     "extends": [

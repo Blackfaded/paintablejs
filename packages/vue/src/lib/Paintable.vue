@@ -20,12 +20,21 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component({})
 export default class Paintable extends Vue {
+  // required
   @Prop({ required: true }) private width!: number;
   @Prop({ required: true }) private height!: number;
   @Prop({ required: true }) private active!: boolean;
 
+  //optional
+  @Prop(Number) private scaleFactor: number | undefined;
+  @Prop(Boolean) private useEraser: boolean | undefined;
+  @Prop(Number) private thicknessEraser: number | undefined;
+  @Prop(Number) private thickness: number | undefined;
+  @Prop(String) private color: string | undefined;
+  @Prop(String) private image: string | undefined;
+
   mounted() {
-    console.log(this.$refs.canvas);
+    console.log(this.$refs);
   }
 }
 </script>
