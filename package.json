@@ -1,90 +1,28 @@
 {
-  "name": "react-paintable",
-  "version": "1.0.0",
-  "author": "René Heinen <r.heinen@nanogiants.de>",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Blackfaded/react-paintable.git"
-  },
-  "description": "This package lets you draw on a canvas.",
-  "keywords": [
-    "react",
-    "paintable",
-    "paint",
-    "canvas"
-  ],
-  "license": "MIT",
+  "name": "paintablejs",
+  "version": "0.1.0",
+  "private": true,
   "main": "dist/js/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/js/index.d.ts",
   "scripts": {
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "build:lib": "yarn build:babel && yarn build:types && node ./scripts/copyTS.js",
-    "build:babel": "concurrently \"yarn build:babel:esm && yarn build:babel:umd\" \"yarn build:babel:cjs\"",
-    "build:babel:cjs": "BABEL_ENV=cjs babel --source-maps --extensions \".js,.ts,.tsx\" src --out-dir dist/js --presets=@babel/env",
-    "build:babel:esm": "BABEL_ENV=esm babel --source-maps --extensions \".js,.ts,.tsx\" src --out-dir dist/esm",
-    "build:babel:umd": "BABEL_ENV=umd babel --source-maps --extensions \".js\" dist/esm --out-dir dist/umd --plugins=transform-es2015-modules-umd",
-    "build:types": "tsc -p tsconfig.gen-dts.json",
-    "clean": "rimraf dist",
-    "develop": "yarn build:types && yarn build:babel:esm --skip-initial-build --watch --verbose",
-    "storybook": "start-storybook -p 9009 -s public",
-    "build-storybook": "build-storybook -s public"
+    "build:all": "yarn build:core && yarn build:react",
+    "build:core": "yarn workspace core build",
+    "build:react": "yarn workspace react build",
+    "dev:core": "yarn workspace core dev",
+    "dev:react": "yarn workspace react dev",
+    "clean:dist": "node ./scripts/clearDist.js",
+    "clean:modules": "rm -rf node_modules && rm -rf packages/**/*/node_modules",
+    "reinstall": "yarn clean:dist && yarn clean:modules && yarn"
   },
-  "dependencies": {
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
-    "@types/jest": "^26.0.15",
-    "@types/node": "^12.0.0",
-    "@types/react": "^16.9.0",
-    "@types/react-dom": "^16.9.0",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "react-scripts": "4.0.1",
-    "typescript": "^4.0.3"
-  },
-  "devDependencies": {
-    "@babel/cli": "^7.8.4",
-    "@babel/plugin-proposal-export-default-from": "^7.8.3",
-    "@storybook/addon-actions": "^6.0.0-alpha.13",
-    "@storybook/addon-docs": "^6.0.0-alpha.13",
-    "@storybook/addon-info": "^6.0.0-alpha.2",
-    "@storybook/addon-links": "^6.0.0-alpha.13",
-    "@storybook/addons": "^6.0.0-alpha.13",
-    "@storybook/preset-create-react-app": "^1.5.2",
-    "@storybook/react": "^6.0.0-alpha.13",
-    "@types/enzyme": "^3.10.5",
-    "@types/enzyme-adapter-react-16": "^1.0.6",
-    "babel-plugin-transform-es2015-modules-umd": "^6.24.1",
-    "babel-plugin-typescript-to-proptypes": "^1.2.1",
-    "node-sass": "^4.14.1",
-    "concurrently": "^5.1.0",
-    "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.2",
-    "enzyme-to-json": "^3.4.4",
-    "jest-enzyme": "^7.1.2"
-  },
-  "peerDependencies": {
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
+  "workspaces": {
+    "packages": [
+      "packages/*",
+      "packages/examples/*"
     ]
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+  "nohoist": [
+    "**/@vue/cli-plugin-eslint",
+    "**/@vue/cli-plugin-eslint/**"
+  ]
 }
