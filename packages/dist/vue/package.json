@@ -1,0 +1,8 @@
+{
+  "name": "paintablejs/vue",
+  "version": "0.1.0",
+  "private": true,
+  "main": "js/index.js",
+  "module": "esm/index.js",
+  "types": "js/index.d.ts"
+}
