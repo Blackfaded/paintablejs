@@ -2,6 +2,8 @@
 # dependencies
 node_modules
 
+.eslintcache
+
 /.pnp
 .pnp.js
 
@@ -12,7 +14,12 @@ node_modules
 packages/dist/**/*
 !packages/dist/react
 packages/dist/react/**/*
+!packages/dist/vue
+packages/dist/vue/**/*
 !packages/dist/**/package.json
+
+/test
+
 
 
 
