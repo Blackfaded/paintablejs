@@ -80,7 +80,7 @@ export const Paintable = forwardRef((props: Props, ref: Ref<PaintableRef>) => {
         useEraser,
         thicknessEraser,
         thickness,
-        color: '#FF0000',
+        color,
         smooth,
         image,
       });
@@ -89,58 +89,43 @@ export const Paintable = forwardRef((props: Props, ref: Ref<PaintableRef>) => {
   }, [canvas]);
 
   useEffect(() => {
-    if (paintable) {
-      paintable.events.on('save', onSave);
-      paintable.events.on('longPress', onLongPress);
-    }
+    paintable?.events.on('save', onSave);
+    paintable?.events.on('longPress', onLongPress);
   }, [paintable]);
 
   useEffect(() => {
-    if (paintable && thickness) {
-      paintable.setThickness(thickness);
-    }
+    paintable?.setThickness(thickness);
   }, [thickness]);
 
   useEffect(() => {
-    if (paintable && useEraser !== undefined) {
-      paintable.setUseEraser(useEraser);
-    }
+    paintable?.setUseEraser(useEraser);
   }, [useEraser]);
 
   useEffect(() => {
-    console.log({ smooth });
-    if (paintable && smooth !== undefined) {
-      paintable.setSmooth(smooth);
-    }
+    paintable?.setScaleFactor(scaleFactor);
+  }, [scaleFactor]);
+
+  useEffect(() => {
+    paintable?.setSmooth(smooth);
   }, [smooth]);
 
   useEffect(() => {
-    if (paintable) {
-      paintable.setActive(active);
-    }
+    paintable?.setActive(active);
   }, [active]);
 
   useEffect(() => {
-    if (paintable && color) {
-      paintable.setColor(color);
-    }
+    paintable?.setColor(color);
   }, [color]);
 
   const undo = () => {
-    if (paintable) {
-      paintable.undo();
-    }
+    paintable?.undo();
   };
   const redo = () => {
-    if (paintable) {
-      paintable.redo();
-    }
+    paintable?.redo();
   };
 
   const clear = () => {
-    if (paintable) {
-      paintable.clearCanvas();
-    }
+    paintable?.clearCanvas();
   };
 
   return (

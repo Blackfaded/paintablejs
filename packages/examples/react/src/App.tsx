@@ -37,7 +37,11 @@ function App() {
             }}
           />
         </label>
-        <input type="color" onChange={(e) => setColor(e.target.value)} />
+        <input
+          type="color"
+          value={color}
+          onChange={(e) => setColor(e.target.value)}
+        />
         <input
           type="range"
           defaultValue={5}

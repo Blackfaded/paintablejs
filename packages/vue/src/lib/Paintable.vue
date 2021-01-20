@@ -43,27 +43,32 @@ export default class Paintable extends Vue {
   }
 
   @Watch("useEraser")
-  private useEraserChanged(useEraser: boolean) {
+  private useEraserChanged(useEraser: boolean | undefined) {
     this.paintable?.setUseEraser(useEraser);
   }
 
   @Watch("thicknessEraser")
-  private thicknessEraserChanged(thicknessEraser: number) {
+  private thicknessEraserChanged(thicknessEraser: number | undefined) {
     this.paintable?.setThicknessEraser(thicknessEraser);
   }
 
   @Watch("thickness")
-  private thicknessChanged(thickness: number) {
+  private thicknessChanged(thickness: number | undefined) {
     this.paintable?.setThickness(thickness);
   }
   @Watch("color")
-  private colorChanged(color: string) {
+  private colorChanged(color: string | undefined) {
     this.paintable?.setColor(color);
   }
 
   @Watch("smooth")
-  private smoothChanged(smooth: boolean) {
+  private smoothChanged(smooth: boolean | undefined) {
     this.paintable?.setSmooth(smooth);
+  }
+
+  @Watch("scaleFactor")
+  private scaleFactorChanged(scaleFactor: number | undefined) {
+    this.paintable?.setScaleFactor(scaleFactor);
   }
 
   undo() {

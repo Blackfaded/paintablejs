@@ -24,12 +24,14 @@ interface Options {
 export class Paintable {
   bounding: DOMRect;
   context: CanvasRenderingContext2D;
+
+  // internal state
   undoList: string[] = [];
   redoList: string[] = [];
   longPressTimer: any = null;
   isDrawing = false;
-  globalCompositeOperation = 'source-over';
-  // options
+
+  // required options
   active: boolean;
   width: number;
   height: number;
@@ -41,19 +43,20 @@ export class Paintable {
   thickness: number = 10;
   color: string = '#000000';
   smooth = false;
+
   // events
   events: EventEmitter;
-  moveEvent: (e: any) => void;
-  startEvent: (e: any) => void;
-  endEvent: (e: any) => void;
+  drawStart: (e: MouseEvent | TouchEvent) => void;
+  drawMove: (e: MouseEvent | TouchEvent) => void;
+  drawEnd: () => void;
 
   constructor(private canvas: HTMLCanvasElement, initialOptions: Options) {
     this.bounding = this.canvas.getBoundingClientRect();
     this.context = this.canvas.getContext('2d')!;
 
-    this.startEvent = this.onDrawStart.bind(this);
-    this.moveEvent = this.onDrawMove.bind(this);
-    this.endEvent = this.onDrawEnd.bind(this);
+    this.drawStart = this.onDrawStart.bind(this);
+    this.drawMove = this.onDrawMove.bind(this);
+    this.drawEnd = this.onDrawEnd.bind(this);
 
     this.width = initialOptions.width;
     this.canvas.width = this.width;
@@ -107,28 +110,26 @@ export class Paintable {
   }
 
   private registerEvents() {
-    // this.canvas.removeEventListener('mousedown', this.startEvent);
-    // this.canvas.removeEventListener('mousemove', this.moveEvent);
-    // this.canvas.removeEventListener('mouseup', this.endEvent);
-    // this.canvas.removeEventListener('mouseout', this.endEvent);
+    this.canvas.addEventListener('mousedown', this.drawStart);
+    this.canvas.addEventListener('mousemove', this.drawMove);
+    this.canvas.addEventListener('mouseup', this.drawEnd);
+    this.canvas.addEventListener('mouseout', this.drawEnd);
 
-    // this.canvas.removeEventListener('touchstart', this.startEvent);
-    // this.canvas.removeEventListener('touchmove', this.moveEvent);
-    // this.canvas.removeEventListener('touchend', this.endEvent);
-
-    this.canvas.addEventListener('mousedown', this.startEvent);
-    this.canvas.addEventListener('mousemove', this.moveEvent);
-    this.canvas.addEventListener('mouseup', this.endEvent);
-    this.canvas.addEventListener('mouseout', this.endEvent);
-
-    this.canvas.addEventListener('touchstart', this.startEvent);
-    this.canvas.addEventListener('touchmove', this.moveEvent);
-    this.canvas.addEventListener('touchend', this.endEvent);
+    this.canvas.addEventListener('touchstart', this.drawStart);
+    this.canvas.addEventListener('touchmove', this.drawMove);
+    this.canvas.addEventListener('touchend', this.drawEnd);
   }
 
-  setColor(color: string) {
+  setColor(color: string | undefined) {
+    if (color === undefined) {
+      return;
+    }
     if (this.isHexColor(color)) {
       this.color = color;
+    } else {
+      console.warn(
+        `Invalid color: color must be a hex string. Received: ${color}`
+      );
     }
   }
 
@@ -142,27 +143,57 @@ export class Paintable {
     }
   }
 
-  setUseEraser(useEraser: boolean) {
+  setScaleFactor(scaleFactor: number | undefined) {
+    if (scaleFactor === undefined) {
+      return;
+    }
+    this.scaleFactor = scaleFactor;
+  }
+
+  setUseEraser(useEraser: boolean | undefined) {
+    if (useEraser === undefined) {
+      return;
+    }
     this.useEraser = useEraser;
   }
 
-  setThickness(thickness: number) {
+  setThickness(thickness: number | undefined) {
+    if (thickness === undefined) {
+      return;
+    }
     if (thickness > 1) {
       this.thickness = thickness;
+    } else {
+      console.warn(
+        `Invalid thickness: thickness must be greater than 1. Received: ${thickness}`
+      );
     }
   }
 
-  setThicknessEraser(thicknessEraser: number) {
+  setThicknessEraser(thicknessEraser: number | undefined) {
+    if (thicknessEraser === undefined) {
+      return;
+    }
     if (thicknessEraser > 1) {
       this.thicknessEraser = thicknessEraser;
+    } else {
+      console.warn(
+        `Invalid thicknessEraser: thicknessEraser must be greater than 1. Received: ${thicknessEraser}`
+      );
     }
   }
 
-  setSmooth(smooth: boolean) {
+  setSmooth(smooth: boolean | undefined) {
+    if (smooth === undefined) {
+      return;
+    }
     this.smooth = smooth;
   }
 
-  setImage(image: string) {
+  setImage(image: string | undefined | null) {
+    if (image === undefined || image === null) {
+      return;
+    }
     this.restoreCanvas(image);
   }
 
@@ -185,7 +216,7 @@ export class Paintable {
     this.context.lineJoin = 'round';
   }
 
-  onDrawStart(e: any) {
+  onDrawStart(e: MouseEvent | TouchEvent) {
     this.startLongPressTimer();
 
     if (this.active) {
@@ -201,12 +232,12 @@ export class Paintable {
     }
   }
 
-  onDrawMove(e: any) {
+  onDrawMove(e: MouseEvent | TouchEvent) {
     if (this.isDrawing && this.active) {
       this.stopLongPressTimer();
-
+      console.log('start');
       const mousePosition = this.getMousePosition(e);
-
+      console.log({ mousePosition });
       this.context.lineTo(mousePosition.x, mousePosition.y);
 
       this.context.stroke();
@@ -241,23 +272,26 @@ export class Paintable {
     this.events.emit('save', image);
   }
 
-  getMousePosition(e: any): MousePosition {
+  getMousePosition(e: MouseEvent | TouchEvent): MousePosition {
     const rect = this.canvas.getBoundingClientRect();
 
     // use cursor pos as default
-    let clientX = e.clientX;
-    let clientY = e.clientY;
+    let clientX = (e as MouseEvent).clientX;
+    let clientY = (e as MouseEvent).clientY;
 
     // use first touch if available
-    if (e.changedTouches && e.changedTouches.length > 0) {
-      clientX = e.changedTouches[0].clientX;
-      clientY = e.changedTouches[0].clientY;
+    if (
+      (e as TouchEvent).changedTouches &&
+      (e as TouchEvent).changedTouches.length > 0
+    ) {
+      clientX = (e as TouchEvent).changedTouches[0].clientX;
+      clientY = (e as TouchEvent).changedTouches[0].clientY;
     }
 
     // return mouse/touch position inside canvas
     return {
-      x: (clientX - rect.left) / this.scaleFactor,
-      y: (clientY - rect.top) / this.scaleFactor,
+      x: ((clientX || 0) - rect.left) / this.scaleFactor,
+      y: ((clientY || 0) - rect.top) / this.scaleFactor,
     };
   }
 
