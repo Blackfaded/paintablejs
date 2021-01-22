@@ -1,6 +1,6 @@
 # React Usage
 
-For prop types see [Paintable](../README.md)
+For prop types see [Paintable](README.md)
 
 `app.tsx`
 

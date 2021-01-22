@@ -1,6 +1,6 @@
 # Vue Usage
 
-For prop types see [Paintable](../README.md)
+For prop types see [Paintable](README.md)
 
 `App.vue`
 

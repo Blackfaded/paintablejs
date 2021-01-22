@@ -21,6 +21,7 @@
   ],
   "license": "MIT",
   "scripts": {
+    "build:ci": "yarn build:all && node scripts/copyDocs.js",
     "build:all": "yarn build:core && concurrently \"yarn build:react\" \"yarn build:vue\" \"yarn build:angular\"",
     "build:core": "yarn workspace core build",
     "build:react": "yarn workspace react build",
