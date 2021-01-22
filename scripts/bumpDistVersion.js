@@ -6,6 +6,7 @@ const distPackageJson = require('../packages/dist/package.json');
 
 distPackageJson.version = mainPackageJson.version;
 
+// bump all dependency versions in workspaces
 globby([
   'packages/**/*/package.json',
   '!**/*/node_modules/**/*/package.json',
@@ -22,6 +23,7 @@ globby([
   }
 });
 
+// bump dist version
 fs.writeFileSync(
   './packages/dist/package.json',
   JSON.stringify(distPackageJson, null, 2)
