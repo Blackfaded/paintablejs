@@ -1,8 +1,25 @@
 {
   "name": "paintablejs",
-  "version": "0.1.0",
   "private": true,
   "main": "core/js/index.js",
   "module": "core/esm/index.js",
-  "types": "core/js/index.d.ts"
+  "types": "core/js/index.d.ts",
+  "author": "René Heinen <r.heinen@nanogiants.de>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Blackfaded/paintable.git"
+  },
+  "description": "This package lets you draw on a canvas.",
+  "keywords": [
+    "vue",
+    "react",
+    "angular",
+    "javascript",
+    "typescript",
+    "paintable",
+    "paint",
+    "canvas",
+    "draw"
+  ],
+  "license": "MIT"
 }

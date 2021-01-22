@@ -9,12 +9,12 @@ export default {
   output: [
     {
       format: 'cjs',
-      file: '../dist/vue/js/index.js',
+      file: '../../dist/vue/js/index.js',
       sourcemap: false,
     },
     {
       format: 'esm',
-      file: '../dist/vue/esm/index.js',
+      file: '../../dist/vue/esm/index.js',
       sourcemap: false,
     },
   ],

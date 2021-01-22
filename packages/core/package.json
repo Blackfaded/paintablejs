@@ -1,19 +1,7 @@
 {
   "name": "core",
   "version": "0.1.0",
-  "author": "René Heinen <r.heinen@nanogiants.de>",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Blackfaded/react-paintable.git"
-  },
-  "description": "This package lets you draw on a canvas.",
-  "keywords": [
-    "react",
-    "paintable",
-    "paint",
-    "canvas"
-  ],
-  "license": "MIT",
+  "private": true,
   "main": "dist/js/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/js/index.d.ts",

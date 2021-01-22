@@ -83,7 +83,7 @@ export default class Paintable extends Vue {
     this.paintable?.clearCanvas();
   }
 
-  private mounted() {
+  mounted() {
     this.paintable = new PaintableCore(this.$refs.canvas as HTMLCanvasElement, {
       width: this.width,
       height: this.height,
@@ -93,6 +93,7 @@ export default class Paintable extends Vue {
       useEraser: this.useEraser,
       thicknessEraser: this.thicknessEraser,
       thickness: this.thickness,
+      smooth: this.smooth,
       color: this.color,
       image: this.image,
     });

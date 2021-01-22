@@ -32,7 +32,6 @@ function App() {
             type="checkbox"
             checked={smooth}
             onChange={(e) => {
-              console.log(e.target.checked);
               setSmooth(e.target.checked);
             }}
           />
