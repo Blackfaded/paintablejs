@@ -1,5 +1,5 @@
-var globby = require('globby');
-var rimraf = require('rimraf');
+const globby = require('globby');
+const rimraf = require('rimraf');
 
 globby(
   [

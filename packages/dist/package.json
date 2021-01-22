@@ -1,5 +1,6 @@
 {
   "name": "paintablejs",
+  "version": "0.1.2",
   "private": true,
   "main": "core/js/index.js",
   "module": "core/esm/index.js",
