@@ -1,7 +1,7 @@
 {
   "name": "paintablejs",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "René Heinen <r.heinen@nanogiants.de>",
   "repository": {
     "type": "git",
@@ -37,7 +37,8 @@
     "example:core": "yarn workspace example-core serve",
     "clean:dist": "node ./scripts/clearDist.js",
     "clean:modules": "rm -rf node_modules && rm -rf packages/**/*/node_modules",
-    "reinstall": "yarn clean:dist && yarn clean:modules && yarn"
+    "reinstall": "yarn clean:dist && yarn clean:modules && yarn",
+    "version": "yarn version --all"
   },
   "workspaces": {
     "packages": [
