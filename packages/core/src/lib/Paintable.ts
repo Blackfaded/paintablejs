@@ -1,5 +1,3 @@
-import EventEmitter from 'events';
-
 interface MousePosition {
   x: number;
   y: number;
@@ -18,7 +16,9 @@ interface Options {
   thickness?: number;
   color?: string;
   smooth?: boolean;
-  image?: string | null;
+  image?: string;
+  onLongPress?: () => void;
+  onSave?: (image: string) => void;
 }
 
 export class Paintable {
@@ -42,10 +42,11 @@ export class Paintable {
   private thicknessEraser = 40;
   private thickness: number = 10;
   private color: string = '#000000';
-  private smooth = false;
+  private smooth = true;
 
-  // events
-  events: EventEmitter;
+  private onLongPress: () => void = () => {};
+
+  private onSave: (image: string) => void = () => {};
 
   constructor(private canvas: HTMLCanvasElement, initialOptions: Options) {
     this.bounding = this.canvas.getBoundingClientRect();
@@ -59,43 +60,47 @@ export class Paintable {
 
     this.active = initialOptions.active;
 
-    if (initialOptions.scaleFactor) {
+    if (initialOptions.scaleFactor !== undefined) {
       this.scaleFactor = initialOptions.scaleFactor;
     }
 
-    if (initialOptions.useEraser) {
+    if (initialOptions.useEraser !== undefined) {
       this.setUseEraser(initialOptions.useEraser);
     }
 
-    if (initialOptions.thicknessEraser) {
+    if (initialOptions.thicknessEraser !== undefined) {
       this.setThicknessEraser(initialOptions.thicknessEraser);
     }
 
-    if (initialOptions.thickness) {
+    if (initialOptions.thickness !== undefined) {
       this.setThickness(initialOptions.thickness);
     }
 
-    if (initialOptions.color) {
+    if (initialOptions.color !== undefined) {
       this.setColor(initialOptions.color);
     }
 
-    if (initialOptions.smooth) {
+    if (initialOptions.smooth !== undefined) {
       this.setSmooth(initialOptions.smooth);
     }
 
-    if (initialOptions.image) {
+    if (initialOptions.image !== undefined) {
       this.setImage(initialOptions.image);
+    }
+
+    if (initialOptions.onLongPress !== undefined) {
+      this.onLongPress = initialOptions.onLongPress;
+    }
+
+    if (initialOptions.onSave !== undefined) {
+      this.onSave = initialOptions.onSave;
     }
 
     this.setStyle();
     this.registerEvents();
-    this.events = new EventEmitter();
   }
 
-  setColor(color: string | undefined) {
-    if (color === undefined) {
-      return;
-    }
+  setColor(color: string) {
     if (this.isHexColor(color)) {
       this.color = color;
     } else {
@@ -115,24 +120,15 @@ export class Paintable {
     }
   }
 
-  setScaleFactor(scaleFactor: number | undefined) {
-    if (scaleFactor === undefined) {
-      return;
-    }
+  setScaleFactor(scaleFactor: number) {
     this.scaleFactor = scaleFactor;
   }
 
-  setUseEraser(useEraser: boolean | undefined) {
-    if (useEraser === undefined) {
-      return;
-    }
+  setUseEraser(useEraser: boolean) {
     this.useEraser = useEraser;
   }
 
-  setThickness(thickness: number | undefined) {
-    if (thickness === undefined) {
-      return;
-    }
+  setThickness(thickness: number) {
     if (thickness > 1) {
       this.thickness = thickness;
     } else {
@@ -142,10 +138,7 @@ export class Paintable {
     }
   }
 
-  setThicknessEraser(thicknessEraser: number | undefined) {
-    if (thicknessEraser === undefined) {
-      return;
-    }
+  setThicknessEraser(thicknessEraser: number) {
     if (thicknessEraser > 1) {
       this.thicknessEraser = thicknessEraser;
     } else {
@@ -155,10 +148,7 @@ export class Paintable {
     }
   }
 
-  setSmooth(smooth: boolean | undefined) {
-    if (smooth === undefined) {
-      return;
-    }
+  setSmooth(smooth: boolean) {
     this.smooth = smooth;
   }
 
@@ -265,6 +255,7 @@ export class Paintable {
   }
 
   private onDrawEnd() {
+    this.stopLongPressTimer();
     if (this.active) {
       this.isDrawing = false;
     }
@@ -274,7 +265,7 @@ export class Paintable {
     const timerId = setTimeout(() => {
       this.undoList = this.undoList.slice(0, -1);
       this.longPressTimer = null;
-      this.events.emit('longPress');
+      this.onLongPress();
     }, 500);
     this.longPressTimer = timerId;
   }
@@ -290,7 +281,7 @@ export class Paintable {
     this.undoList = [];
     this.redoList = [];
     const image = this.canvas.toDataURL();
-    this.events.emit('save', image);
+    this.onSave(image);
   }
 
   private getMousePosition(e: MouseEvent | TouchEvent): MousePosition {

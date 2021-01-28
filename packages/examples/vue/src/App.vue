@@ -77,7 +77,7 @@ export default class App extends Vue {
   }
 
   get image() {
-    return localStorage.getItem("/");
+    return localStorage.getItem("/") || undefined;
   }
 
   onSave(image: string) {

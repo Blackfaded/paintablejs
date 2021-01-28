@@ -59,7 +59,7 @@ function App() {
         thickness={thickness}
         useEraser={useEraser}
         ref={paintableRef}
-        image={localStorage.getItem('/')}
+        image={localStorage.getItem('/') || undefined}
         smooth={smooth}
         onSave={(image: string) => localStorage.setItem('/', image)}
         onLongPress={() => console.log('long')}

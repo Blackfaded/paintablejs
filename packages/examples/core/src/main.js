@@ -35,15 +35,9 @@ function init() {
     thickness,
     smooth,
     color,
-    image: localStorage.getItem('/'),
-  });
-
-  paintable.events.on('save', function(image) {
-    localStorage.setItem('/', image);
-  });
-
-  paintable.events.on('longPress', function() {
-    console.log('longpress');
+    image: localStorage.getItem('/') || undefined,
+    onLongPress: () => console.log('longPress'),
+    onSave: (image) => localStorage.setItem('/', image),
   });
 
   editButton.addEventListener('click', function() {

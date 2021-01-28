@@ -22,7 +22,7 @@ interface Props {
   thickness?: number;
   color?: string;
   smooth?: boolean;
-  image?: string | null;
+  image?: string;
 
   onSave: (image: string) => void;
   onLongPress: () => void;
@@ -83,15 +83,12 @@ export const Paintable = forwardRef((props: Props, ref: Ref<PaintableRef>) => {
         color,
         smooth,
         image,
+        onLongPress,
+        onSave,
       });
       setPaintable(instance);
     }
   }, [canvas]);
-
-  useEffect(() => {
-    paintable?.events.on('save', onSave);
-    paintable?.events.on('longPress', onLongPress);
-  }, [paintable]);
 
   useEffect(() => {
     paintable?.setThickness(thickness);

@@ -23,7 +23,7 @@ export class PaintableComponent implements OnInit {
   @Output() onSave = new EventEmitter<string>();
   @Output() onLongPress = new EventEmitter();
 
-  @Input() image: string;
+  @Input() image?: string;
 
   @Input() width: number;
   @Input() height: number;
@@ -126,13 +126,11 @@ export class PaintableComponent implements OnInit {
         thickness: this.thickness,
         smooth: this.smooth,
         color: this.color,
-        image: this.image
+        image: this.image,
+        onLongPress: () => this.onLongPress.emit(),
+        onSave: (image: string) => this.onSave.emit(image)
       }
     );
-    this.paintable.events.on('save', (image: string) =>
-      this.onSave.emit(image)
-    );
-    this.paintable.events.on('longPress', () => this.onLongPress.emit());
   }
 
   ngOnInit() {}

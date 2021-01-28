@@ -39,7 +39,7 @@
     "clean:dist": "node ./scripts/clearDist.js",
     "clean:modules": "rm -rf node_modules && rm -rf packages/**/*/node_modules",
     "reinstall": "yarn clean:dist && yarn clean:modules && yarn",
-    "postversion": "node ./scripts/bumpDistVersion && git . && git commit -m \"chore: set version to $npm_package_version\""
+    "postversion": "node ./scripts/bumpDistVersion && git . && git commit -m \"Update version to $npm_package_version\""
   },
   "workspaces": {
     "packages": [

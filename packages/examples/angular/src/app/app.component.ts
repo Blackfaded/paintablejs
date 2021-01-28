@@ -38,7 +38,7 @@ export class AppComponent {
   }
 
   get image() {
-    return localStorage.getItem('/');
+    return localStorage.getItem('/') || undefined;
   }
 
   onSave(image: string) {
