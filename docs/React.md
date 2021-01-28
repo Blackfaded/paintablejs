@@ -4,13 +4,13 @@ For prop types see [Paintable](README.md)
 
 `app.tsx`
 
-```js
+```ts
 import React, { useRef, useState } from 'react';
 import { Paintable, PaintableRef } from 'paintablejs/react';
 import styles from './App.module.css';
 
 function App() {
-  const paintableRef = useRef < PaintableRef > null;
+  const paintableRef = useRef<PaintableRef>(null);
   const [color, setColor] = useState('#0000FF');
   const [smooth, setSmooth] = useState(false);
   const [active, setActive] = useState(false);

@@ -25,6 +25,7 @@ This Package enables you to write on a canvas and set different Options.
 | thickness       | number  | 10      |          | width of the pencil while drawing                                                                   |
 | color           | string  | #000000 |          | the pencilcolor MUST be a hex value. Other strings wont work right now                              |
 | smooth          | boolean | false   |          | flag if the drawing should me smoothed                                                              |
+| image           | string  | null    |          | initial image (base64) drawn from the canvas                                                        |
 
 ## Events
 
