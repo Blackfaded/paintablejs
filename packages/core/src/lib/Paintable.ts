@@ -273,6 +273,7 @@ export class Paintable {
   private startLongPressTimer() {
     const timerId = setTimeout(() => {
       this.undoList = this.undoList.slice(0, -1);
+      this.longPressTimer = null;
       this.events.emit('longPress');
     }, 500);
     this.longPressTimer = timerId;
