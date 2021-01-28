@@ -29,7 +29,6 @@ export class Paintable {
   private undoList: string[] = [];
   private redoList: string[] = [];
   private longPressTimer: any = null;
-  private isDrawing = false;
 
   // required options
   private active: boolean;
@@ -44,13 +43,14 @@ export class Paintable {
   private color: string = '#000000';
   private smooth = false;
 
+  private points: MousePosition[] = [];
+
   // events
   events: EventEmitter;
 
   constructor(private canvas: HTMLCanvasElement, initialOptions: Options) {
     this.bounding = this.canvas.getBoundingClientRect();
     this.context = this.canvas.getContext('2d')!;
-
     this.width = initialOptions.width;
     this.canvas.width = this.width;
 
@@ -217,13 +217,14 @@ export class Paintable {
     }
     this.restoreCanvas(image);
   }
+  usedLineWidth = this.thickness;
 
   private setDrawOptions() {
     this.context.globalCompositeOperation = this.useEraser
       ? 'destination-out'
       : 'source-over';
 
-    this.context.lineWidth = this.useEraser
+    this.usedLineWidth = this.useEraser
       ? this.thicknessEraser
       : this.smooth
       ? this.thickness - 2
@@ -234,10 +235,9 @@ export class Paintable {
       this.smooth && this.color.length !== 9 ? `${this.color}80` : this.color;
     this.context.shadowBlur = this.smooth ? 2 : 0;
 
-    this.context.strokeStyle = this.color;
-    this.context.lineCap = 'round';
-    this.context.lineJoin = 'round';
+    this.context.fillStyle = this.color;
   }
+  lastPoint: MousePosition | null = null;
 
   private onDrawStart(e: MouseEvent | TouchEvent) {
     this.startLongPressTimer();
@@ -248,25 +248,47 @@ export class Paintable {
 
       this.undoList = [...this.undoList, this.canvas.toDataURL()];
       this.redoList = [];
-
-      this.context.beginPath();
-      this.context.moveTo(mousePosition.x, mousePosition.y);
-      this.isDrawing = true;
+      this.lastPoint = mousePosition;
     }
   }
 
+  distanceBetween(point1: MousePosition, point2: MousePosition) {
+    return Math.sqrt(
+      Math.pow(point2.x - point1.x, 2) + Math.pow(point2.y - point1.y, 2)
+    );
+  }
+  angleBetween(point1: MousePosition, point2: MousePosition) {
+    return Math.atan2(point2.x - point1.x, point2.y - point1.y);
+  }
+
   private onDrawMove(e: MouseEvent | TouchEvent) {
-    if (this.isDrawing && this.active) {
+    if (this.lastPoint && this.active) {
       this.stopLongPressTimer();
       const mousePosition = this.getMousePosition(e);
-      this.context.lineTo(mousePosition.x, mousePosition.y);
-      this.context.stroke();
+
+      const dist = this.distanceBetween(this.lastPoint, mousePosition);
+      const angle = this.angleBetween(this.lastPoint, mousePosition);
+
+      for (let i = 0; i < dist; i += 1) {
+        const x = this.lastPoint.x + Math.sin(angle) * i;
+        const y = this.lastPoint.y + Math.cos(angle) * i;
+        this.context.shadowBlur = 1;
+        this.context.shadowOffsetX = 0;
+        this.context.shadowOffsetY = 0;
+        this.context.beginPath();
+        this.context.fillStyle = 'red';
+        this.context.arc(x, y, this.usedLineWidth / 2, 0, Math.PI * 2, false);
+        this.context.closePath();
+        this.context.fill();
+      }
+
+      this.lastPoint = mousePosition;
     }
   }
 
   private onDrawEnd() {
     if (this.active) {
-      this.isDrawing = false;
+      this.lastPoint = null;
     }
   }
 
