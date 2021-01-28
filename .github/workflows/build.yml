@@ -36,11 +36,10 @@ jobs:
       #     name: bundle-${{ steps.package-version.outputs.current-version }}
       #     path: packages/dist
       - name: Publish to Npm
-        if: github.event_name == 'push'
         id: publish
         uses: JS-DevTools/npm-publish@v1
         with:
-          package: ./packages/dist
+          package: ./packages/dist/package.json
           token: ${{ secrets.NPM_TOKEN }}
           check-version: 'true'
       - if: steps.publish.outputs.type != 'none'
