@@ -3,7 +3,7 @@ interface MousePosition {
   y: number;
 }
 
-interface Options {
+export interface PaintableOptions {
   // required
   width: number;
   height: number;
@@ -15,7 +15,6 @@ interface Options {
   thicknessEraser?: number;
   thickness?: number;
   color?: string;
-  smooth?: boolean;
   image?: string;
   onLongPress?: () => void;
   onSave?: (image: string) => void;
@@ -24,12 +23,6 @@ interface Options {
 export class Paintable {
   bounding: DOMRect;
   context: CanvasRenderingContext2D;
-
-  // internal state
-  private undoList: string[] = [];
-  private redoList: string[] = [];
-  private longPressTimer: any = null;
-  private isDrawing = false;
 
   // required options
   private active: boolean;
@@ -42,16 +35,23 @@ export class Paintable {
   private thicknessEraser = 40;
   private thickness: number = 10;
   private color: string = '#000000';
-  private smooth = true;
-
   private onLongPress: () => void = () => {};
-
   private onSave: (image: string) => void = () => {};
 
-  constructor(private canvas: HTMLCanvasElement, initialOptions: Options) {
+  // internal state
+  private undoList: string[] = [];
+  private redoList: string[] = [];
+  private longPressTimer: any = null;
+  private lastPoint: MousePosition | null = null;
+  private usedLineWidth;
+  private canvasSaved = false;
+
+  constructor(
+    private canvas: HTMLCanvasElement,
+    initialOptions: PaintableOptions
+  ) {
     this.bounding = this.canvas.getBoundingClientRect();
     this.context = this.canvas.getContext('2d')!;
-
     this.width = initialOptions.width;
     this.canvas.width = this.width;
 
@@ -80,10 +80,6 @@ export class Paintable {
       this.setColor(initialOptions.color);
     }
 
-    if (initialOptions.smooth !== undefined) {
-      this.setSmooth(initialOptions.smooth);
-    }
-
     if (initialOptions.image !== undefined) {
       this.setImage(initialOptions.image);
     }
@@ -96,18 +92,14 @@ export class Paintable {
       this.onSave = initialOptions.onSave;
     }
 
+    this.usedLineWidth = this.useEraser ? this.thicknessEraser : this.thickness;
+
     this.setStyle();
     this.registerEvents();
   }
 
   setColor(color: string) {
-    if (this.isHexColor(color)) {
-      this.color = color;
-    } else {
-      console.warn(
-        `Invalid color: color must be a hex string. Received: ${color}`
-      );
-    }
+    this.color = color;
   }
 
   setActive(active: boolean) {
@@ -148,8 +140,8 @@ export class Paintable {
     }
   }
 
-  setSmooth(smooth: boolean) {
-    this.smooth = smooth;
+  private setImage(image: string) {
+    this.restoreCanvas(image);
   }
 
   undo() {
@@ -180,10 +172,6 @@ export class Paintable {
     }
   }
 
-  private isHexColor(color: string) {
-    return /^#([0-9A-F]{3}){1,2}$/i.test(color);
-  }
-
   private setStyle() {
     this.canvas.style.position = 'absolute';
     this.canvas.style.zIndex = this.active ? '9999' : '-10';
@@ -201,32 +189,14 @@ export class Paintable {
     this.canvas.addEventListener('touchend', this.onDrawEnd.bind(this));
   }
 
-  private setImage(image: string | undefined | null) {
-    if (image === undefined || image === null) {
-      return;
-    }
-    this.restoreCanvas(image);
-  }
-
   private setDrawOptions() {
     this.context.globalCompositeOperation = this.useEraser
       ? 'destination-out'
       : 'source-over';
 
-    this.context.lineWidth = this.useEraser
-      ? this.thicknessEraser
-      : this.smooth
-      ? this.thickness - 2
-      : this.thickness;
+    this.usedLineWidth = this.useEraser ? this.thicknessEraser : this.thickness;
 
-    // 9 because of #FFFFFF80 is already with alpha channel
-    this.context.shadowColor =
-      this.smooth && this.color.length !== 9 ? `${this.color}80` : this.color;
-    this.context.shadowBlur = this.smooth ? 2 : 0;
-
-    this.context.strokeStyle = this.color;
-    this.context.lineCap = 'round';
-    this.context.lineJoin = 'round';
+    this.context.fillStyle = this.color;
   }
 
   private onDrawStart(e: MouseEvent | TouchEvent) {
@@ -236,34 +206,46 @@ export class Paintable {
       this.setDrawOptions();
       const mousePosition = this.getMousePosition(e);
 
-      this.undoList = [...this.undoList, this.canvas.toDataURL()];
-      this.redoList = [];
-
-      this.context.beginPath();
-      this.context.moveTo(mousePosition.x, mousePosition.y);
-      this.isDrawing = true;
+      this.lastPoint = mousePosition;
     }
   }
 
   private onDrawMove(e: MouseEvent | TouchEvent) {
-    if (this.isDrawing && this.active) {
+    if (this.lastPoint && this.active) {
+      if (!this.canvasSaved) {
+        this.undoList = [...this.undoList, this.canvas.toDataURL()];
+        this.redoList = [];
+        this.canvasSaved = true;
+      }
       this.stopLongPressTimer();
       const mousePosition = this.getMousePosition(e);
-      this.context.lineTo(mousePosition.x, mousePosition.y);
-      this.context.stroke();
+
+      const dist = this.distanceBetween(this.lastPoint, mousePosition);
+      const angle = this.angleBetween(this.lastPoint, mousePosition);
+
+      for (let i = 0; i < dist; i += 1) {
+        const x = this.lastPoint.x + Math.sin(angle) * i;
+        const y = this.lastPoint.y + Math.cos(angle) * i;
+        this.context.beginPath();
+        this.context.arc(x, y, this.usedLineWidth / 2, 0, Math.PI * 2, false);
+        this.context.closePath();
+        this.context.fill();
+      }
+
+      this.lastPoint = mousePosition;
     }
   }
 
   private onDrawEnd() {
-    this.stopLongPressTimer();
     if (this.active) {
-      this.isDrawing = false;
+      this.stopLongPressTimer();
+      this.lastPoint = null;
+      this.canvasSaved = false;
     }
   }
 
   private startLongPressTimer() {
     const timerId = setTimeout(() => {
-      this.undoList = this.undoList.slice(0, -1);
       this.longPressTimer = null;
       this.onLongPress();
     }, 500);
@@ -275,6 +257,15 @@ export class Paintable {
       clearTimeout(this.longPressTimer);
       this.longPressTimer = null;
     }
+  }
+
+  private distanceBetween(point1: MousePosition, point2: MousePosition) {
+    return Math.sqrt(
+      Math.pow(point2.x - point1.x, 2) + Math.pow(point2.y - point1.y, 2)
+    );
+  }
+  private angleBetween(point1: MousePosition, point2: MousePosition) {
+    return Math.atan2(point2.x - point1.x, point2.y - point1.y);
   }
 
   private saveImage() {
@@ -312,8 +303,6 @@ export class Paintable {
       let image = new Image();
       image.onload = () => {
         this.context.globalCompositeOperation = 'source-over';
-        this.context.shadowColor = this.color;
-        this.context.shadowBlur = 0;
         this.context.clearRect(0, 0, this.width, this.height);
         this.context.drawImage(image, 0, 0);
       };

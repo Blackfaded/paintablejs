@@ -5,6 +5,7 @@
   "module": "core/esm/index.js",
   "types": "core/js/index.d.ts",
   "author": "René Heinen <r.heinen@nanogiants.de>",
+  "sideEffects": false,
   "repository": {
     "type": "git",
     "url": "https://github.com/Blackfaded/paintable.git"

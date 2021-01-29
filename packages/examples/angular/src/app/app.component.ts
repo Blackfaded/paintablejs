@@ -13,7 +13,6 @@ export class AppComponent {
   active = false;
   useEraser = false;
   thickness = 5;
-  smooth = false;
   color = '#FF0000';
 
   clear() {

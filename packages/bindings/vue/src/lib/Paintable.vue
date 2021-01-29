@@ -32,7 +32,6 @@ export default class Paintable extends Vue {
   @Prop(Number) private readonly thicknessEraser: number | undefined;
   @Prop(Number) private readonly thickness: number | undefined;
   @Prop(String) private readonly color: string | undefined;
-  @Prop(Boolean) private readonly smooth: boolean | undefined;
   @Prop(String) private readonly image: string | undefined;
 
   paintable: null | PaintableCore = null;
@@ -59,11 +58,6 @@ export default class Paintable extends Vue {
   @Watch("color")
   private colorChanged(color: string) {
     this.paintable?.setColor(color);
-  }
-
-  @Watch("smooth")
-  private smoothChanged(smooth: boolean) {
-    this.paintable?.setSmooth(smooth);
   }
 
   @Watch("scaleFactor")
@@ -93,7 +87,6 @@ export default class Paintable extends Vue {
       useEraser: this.useEraser,
       thicknessEraser: this.thicknessEraser,
       thickness: this.thickness,
-      smooth: this.smooth,
       color: this.color,
       image: this.image,
       onLongPress: () => this.$emit("longPress"),

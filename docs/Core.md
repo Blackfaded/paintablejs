@@ -32,9 +32,8 @@ For prop types see [Paintable](README.md)
       <button id="useEraserButton">
         use eraser
       </button>
-      <label> Smooth: <input id="smoothCheckbox" type="checkbox" /> </label>
       <input id="colorInput" type="color" />
-      <input id="rangeInput" type="range" min="{1}" max="{30}" step="{1}" />
+      <input id="rangeInput" type="range" min="1" max="30" step="1" />
     </div>
     <canvas id="canvas"></canvas>
     <div id="canvasOverlay"></div>
@@ -56,7 +55,6 @@ function init() {
 
   let active = false;
   let useEraser = false;
-  let smooth = false;
   let color = '#FF0000';
   let thickness = 5;
 
@@ -65,7 +63,6 @@ function init() {
   const redoButton = document.getElementById('redoButton');
   const editButton = document.getElementById('editButton');
   const useEraserButton = document.getElementById('useEraserButton');
-  const smoothCheckbox = document.getElementById('smoothCheckbox');
   const colorInput = document.getElementById('colorInput');
   colorInput.value = color;
   const rangeInput = document.getElementById('rangeInput');
@@ -82,17 +79,10 @@ function init() {
     useEraser,
     thicknessEraser: 40,
     thickness,
-    smooth,
     color,
-    image: localStorage.getItem('/'),
-  });
-
-  paintable.events.on('save', function(image) {
-    localStorage.setItem('/', image);
-  });
-
-  paintable.events.on('longPress', function() {
-    console.log('longpress');
+    image: localStorage.getItem('/') || undefined,
+    onLongPress: () => console.log('longPress'),
+    onSave: (image) => localStorage.setItem('/', image),
   });
 
   editButton.addEventListener('click', function() {
@@ -105,12 +95,6 @@ function init() {
     useEraser = !useEraser;
     paintable.setUseEraser(useEraser);
     useEraserButton.innerText = useEraser ? 'use pencil' : 'use eraser';
-  });
-
-  smoothCheckbox.addEventListener('change', function(e) {
-    smooth = e.target.checked;
-    paintable.setSmooth(smooth);
-    smoothCheckbox.checked = smooth;
   });
 
   colorInput.addEventListener('change', function(e) {

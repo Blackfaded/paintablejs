@@ -4,7 +4,7 @@ For prop types see [Paintable](README.md)
 
 `App.vue`
 
-```js
+```ts
 <template>
   <div id="main">
     <div>
@@ -17,10 +17,6 @@ For prop types see [Paintable](README.md)
       <button @click="toggleEraser">
         {{ useEraser ? "use pencil" : "use eraser" }}
       </button>
-      <label>
-        Smooth:
-        <input type="checkbox" v-model="smooth" />
-      </label>
       <input type="color" v-model="color" />
       <input
         type="range"
@@ -36,7 +32,6 @@ For prop types see [Paintable](README.md)
       :height="768"
       :active="active"
       :color="color"
-      :smooth="smooth"
       :thickness="thickness"
       :useEraser="useEraser"
       :image="image"
@@ -49,71 +44,70 @@ For prop types see [Paintable](README.md)
 </template>
 
 <script lang="ts">
-  import { Component, Vue, Watch } from 'vue-property-decorator';
+import { Component, Vue, Watch } from "vue-property-decorator";
 
-  import { Paintable } from 'paintablejs/vue';
+import { Paintable } from "paintablejs/vue";
 
-  @Component({
-    components: {
-      Paintable,
-    },
-  })
-  export default class App extends Vue {
-    useEraser = false;
-    color = '#FF0000';
-    thickness = 5;
-    active = false;
-    smooth = false;
+@Component({
+  components: {
+    Paintable,
+  },
+})
+export default class App extends Vue {
+  useEraser = false;
+  color = "#FF0000";
+  thickness = 5;
+  active = false;
 
-    paintable: null | Paintable = null;
+  paintable: null | Paintable = null;
 
-    mounted() {
-      this.paintable = (this.$refs.paintable as unknown) as Paintable;
-    }
-
-    clear() {
-      this.paintable?.clear();
-    }
-
-    undo() {
-      this.paintable?.undo();
-    }
-
-    redo() {
-      this.paintable?.redo();
-    }
-
-    get image() {
-      return localStorage.getItem('/');
-    }
-
-    onSave(image: string) {
-      localStorage.setItem('/', image);
-    }
-
-    onLongPress() {
-      console.log('longPress');
-    }
-
-    toggleEraser() {
-      this.useEraser = !this.useEraser;
-    }
-
-    toggleEdit() {
-      this.useEraser = false;
-      this.active = !this.active;
-    }
+  mounted() {
+    this.paintable = (this.$refs.paintable as unknown) as Paintable;
   }
+
+  clear() {
+    this.paintable?.clear();
+  }
+
+  undo() {
+    this.paintable?.undo();
+  }
+
+  redo() {
+    this.paintable?.redo();
+  }
+
+  get image() {
+    return localStorage.getItem("/") || undefined;
+  }
+
+  onSave(image: string) {
+    localStorage.setItem("/", image);
+  }
+
+  onLongPress() {
+    console.log("longPress");
+  }
+
+  toggleEraser() {
+    this.useEraser = !this.useEraser;
+  }
+
+  toggleEdit() {
+    this.useEraser = false;
+    this.active = !this.active;
+  }
+}
 </script>
 
 <style lang="scss" scoped>
-  #paintable-children {
-    background-color: green;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }</style
->>
+#paintable-children {
+  background-color: green;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>
 ```

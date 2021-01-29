@@ -7,7 +7,7 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import { Paintable as PaintableCore } from 'paintablejs';
+import { Paintable as PaintableCore, PaintableOptions } from 'paintablejs';
 
 @Component({
   selector: 'paintable',
@@ -78,16 +78,6 @@ export class PaintableComponent implements OnInit {
     return this._color;
   }
 
-  private _smooth: boolean | undefined;
-  @Input()
-  set smooth(smooth: boolean) {
-    this._smooth = smooth;
-    this.paintable?.setSmooth(this._smooth);
-  }
-  get smooth(): boolean {
-    return this._smooth;
-  }
-
   private _scaleFactor: number | undefined;
   @Input()
   set scaleFactor(scaleFactor: number) {
@@ -124,7 +114,6 @@ export class PaintableComponent implements OnInit {
         useEraser: this.useEraser,
         thicknessEraser: this.thicknessEraser,
         thickness: this.thickness,
-        smooth: this.smooth,
         color: this.color,
         image: this.image,
         onLongPress: () => this.onLongPress.emit(),

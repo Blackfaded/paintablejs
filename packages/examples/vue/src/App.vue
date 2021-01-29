@@ -10,10 +10,6 @@
       <button @click="toggleEraser">
         {{ useEraser ? "use pencil" : "use eraser" }}
       </button>
-      <label>
-        Smooth:
-        <input type="checkbox" v-model="smooth" />
-      </label>
       <input type="color" v-model="color" />
       <input
         type="range"
@@ -29,7 +25,6 @@
       :height="768"
       :active="active"
       :color="color"
-      :smooth="smooth"
       :thickness="thickness"
       :useEraser="useEraser"
       :image="image"
@@ -56,7 +51,6 @@ export default class App extends Vue {
   color = "#FF0000";
   thickness = 5;
   active = false;
-  smooth = false;
 
   paintable: null | Paintable = null;
 
@@ -108,5 +102,5 @@ export default class App extends Vue {
   justify-content: center;
   align-items: center;
 }
-</style>>
+</style>
 
