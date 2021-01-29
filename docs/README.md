@@ -4,13 +4,13 @@ This Package enables you to write on a canvas and set different Options.
 
 ## Usage
 
-[Standalone](Core.md)
+[Standalone](Core.md) ([Example](../packages/examples/core))
 
-[React](React.md)
+[React](React.md) ([Example](../packages/examples/react))
 
-[Vue](Vue.md)
+[Vue](Vue.md) ([Example](../packages/examples/vue))
 
-[Angular](Angular.md)
+[Angular](Angular.md) ([Example](../packages/examples/angular))
 
 ## Props
 
