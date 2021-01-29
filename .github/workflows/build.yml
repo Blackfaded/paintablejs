@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies
         run: yarn
       - name: Build Library
-        run: yarn build:ci
+        run: yarn build:all
       - name: Get package.json Version
         id: package-version
         uses: martinbeentjes/npm-get-version-action@master
@@ -43,6 +43,7 @@ jobs:
           package: ./packages/dist/package.json
           token: ${{ secrets.NPM_TOKEN }}
           check-version: 'true'
-      - if: github.event_name == 'push' && steps.publish.outputs.type != 'none'
+      - name: Show version change
+        if: github.event_name == 'push' && steps.publish.outputs.type != 'none'
         run: |
           echo "Version changed: ${{ steps.publish.outputs.old-version }} => ${{ steps.publish.outputs.version }}"
