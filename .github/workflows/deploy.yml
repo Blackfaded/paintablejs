@@ -1,0 +1,39 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '12'
+      - name: Install dependencies
+        run: yarn
+      - name: Build Library
+        run: yarn build:all
+      - name: Get package.json Version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@master
+        with:
+          path: packages/dist
+      - name: Echo package.json version
+        run: echo "${{ steps.package-version.outputs.current-version }}"
+      - name: Publish to Npm
+        id: publish
+        uses: JS-DevTools/npm-publish@v1
+        with:
+          package: ./packages/dist/package.json
+          token: ${{ secrets.NPM_TOKEN }}
+          check-version: 'true'
+      - name: Show version change
+        if: steps.publish.outputs.type != 'none'
+        run: |
+          echo "Version changed: ${{ steps.publish.outputs.old-version }} => ${{ steps.publish.outputs.version }}"

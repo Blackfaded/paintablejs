@@ -7,10 +7,10 @@ For Usage see the [docs](docs/README.md).
 Clone the repo and execute
 
 ```bash
-yarn
-yarn dev:all
+yarn # install dependencies
+yarn dev:all # fire up the dev environment
 
-# and one of the following
+# and one of the following to check the results live
 yarn example:vue
 yarn example:react
 yarn example:angular
@@ -22,12 +22,4 @@ yarn example:core
 ```bash
 yarn
 yarn build:all
-# yarn build:ci also builds the readme files in the dist directory
 ```
-
-## Roadmap
-
-### build
-
-- [ ] deploy to npm
-- [ ] only deploy on version bump

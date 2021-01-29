@@ -3,10 +3,11 @@ name: Build
 on:
   push:
     branches:
-      - master
+      - develop
   pull_request:
     branches:
       - master
+      - develop
 
 jobs:
   build:
@@ -22,28 +23,3 @@ jobs:
         run: yarn
       - name: Build Library
         run: yarn build:all
-      - name: Get package.json Version
-        id: package-version
-        uses: martinbeentjes/npm-get-version-action@master
-        with:
-          path: packages/dist
-      - name: Echo package.json version
-        run: echo "${{ steps.package-version.outputs.current-version }}"
-      # - name: Upload Artifact on push
-      #   if: github.event_name == 'push'
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: bundle-${{ steps.package-version.outputs.current-version }}
-      #     path: packages/dist
-      - name: Publish to Npm
-        if: github.event_name == 'push'
-        id: publish
-        uses: JS-DevTools/npm-publish@v1
-        with:
-          package: ./packages/dist/package.json
-          token: ${{ secrets.NPM_TOKEN }}
-          check-version: 'true'
-      - name: Show version change
-        if: github.event_name == 'push' && steps.publish.outputs.type != 'none'
-        run: |
-          echo "Version changed: ${{ steps.publish.outputs.old-version }} => ${{ steps.publish.outputs.version }}"
