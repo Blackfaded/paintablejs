@@ -1,6 +1,6 @@
 {
   "name": "paintablejs/angular",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "peerDependencies": {
     "@angular/common": "^11.1.0",
     "@angular/core": "^11.1.0"

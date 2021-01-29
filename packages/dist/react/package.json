@@ -2,5 +2,6 @@
   "name": "paintablejs/react",
   "main": "js/index.js",
   "module": "esm/index.js",
-  "types": "js/index.d.ts"
+  "types": "js/index.d.ts",
+  "sideEffects": false
 }

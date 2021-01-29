@@ -9,7 +9,6 @@ node_modules
 
 # testing
 /coverage
-
 # production
 packages/dist/**/*
 !packages/dist/react
@@ -18,10 +17,10 @@ packages/dist/react/**/*
 packages/dist/vue/**/*
 !packages/dist/**/package.json
 
+packages/examples/core/public/bundle.js
+
+
 /test
-
-
-
 
 # misc
 .DS_Store
