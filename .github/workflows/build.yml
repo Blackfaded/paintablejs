@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies
         run: yarn
       - name: Build Library
-        run: yarn build:ci
+        run: yarn build:all
       - name: Get package.json Version
         id: package-version
         uses: martinbeentjes/npm-get-version-action@master
