@@ -1,6 +1,6 @@
 {
   "name": "angular",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "scripts": {
     "dev": "ng build --watch",
     "build": "ng build --prod"
