@@ -7,25 +7,9 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Paintable as PaintableCore } from 'paintablejs';
+import { Paintable as PaintableCore, PaintableOptions } from 'paintablejs';
 
-interface Props {
-  // required
-  width: number;
-  height: number;
-  active: boolean;
-
-  //optional
-  scaleFactor?: number;
-  useEraser?: boolean;
-  thicknessEraser?: number;
-  thickness?: number;
-  color?: string;
-  smooth?: boolean;
-  image?: string | null;
-
-  onSave: (image: string) => void;
-  onLongPress: () => void;
+interface Props extends PaintableOptions {
   children?: ReactNode;
 }
 
@@ -48,7 +32,6 @@ export const Paintable = forwardRef((props: Props, ref: Ref<PaintableRef>) => {
     thicknessEraser,
     thickness,
     color,
-    smooth,
     image,
 
     onLongPress,
@@ -81,17 +64,13 @@ export const Paintable = forwardRef((props: Props, ref: Ref<PaintableRef>) => {
         thicknessEraser,
         thickness,
         color,
-        smooth,
         image,
+        onLongPress,
+        onSave,
       });
       setPaintable(instance);
     }
   }, [canvas]);
-
-  useEffect(() => {
-    paintable?.events.on('save', onSave);
-    paintable?.events.on('longPress', onLongPress);
-  }, [paintable]);
 
   useEffect(() => {
     paintable?.setThickness(thickness);
@@ -104,10 +83,6 @@ export const Paintable = forwardRef((props: Props, ref: Ref<PaintableRef>) => {
   useEffect(() => {
     paintable?.setScaleFactor(scaleFactor);
   }, [scaleFactor]);
-
-  useEffect(() => {
-    paintable?.setSmooth(smooth);
-  }, [smooth]);
 
   useEffect(() => {
     paintable?.setActive(active);

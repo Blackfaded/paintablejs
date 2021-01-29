@@ -8,7 +8,6 @@
   <button (click)="toggleUseEraser()">
     {{ useEraser ? "use pencil" : "use eraser" }}
   </button>
-  <label> Smooth: <input type="checkbox" [(ngModel)]="smooth" /> </label>
   <input type="color" [(ngModel)]="color" />
   <input type="range" [(ngModel)]="thickness" min="{1}" max="{30}" step="{1}" />
 

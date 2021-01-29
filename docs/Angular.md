@@ -5,26 +5,40 @@ For prop types see [Paintable](README.md)
 `app.component.html`
 
 ```html
-<paintable
-  #paintable
-  [width]="1024"
-  [height]="768"
-  [active]="active"
-  [useEraser]="useEraser"
-  [thickness]="thickness"
-  [smooth]="smooth"
-  [color]="color"
-  [image]="image"
-  (onSave)="onSave($event)"
-  (onLongPress)="onLongPress()"
->
-  <div class="canvas-inner">test</div>
-</paintable>
+<div>
+  <button (click)="clear()">Clear</button>
+  <button (click)="undo()">Undo</button>
+  <button (click)="redo()">Redo</button>
+  <button (click)="toggleEdit()">
+    {{ active ? "save" : "edit" }}
+  </button>
+  <button (click)="toggleUseEraser()">
+    {{ useEraser ? "use pencil" : "use eraser" }}
+  </button>
+  <input type="color" [(ngModel)]="color" />
+  <input type="range" [(ngModel)]="thickness" min="{1}" max="{30}" step="{1}" />
+
+  <paintable
+    #paintable
+    [width]="1024"
+    [height]="768"
+    [active]="active"
+    [useEraser]="useEraser"
+    [thickness]="thickness"
+    [smooth]="smooth"
+    [color]="color"
+    [image]="image"
+    (onSave)="onSave($event)"
+    (onLongPress)="onLongPress()"
+  >
+    <div class="canvas-inner">test</div>
+  </paintable>
+</div>
 ```
 
 `app.component.ts`
 
-```js
+```ts
 import { Component, ViewChild } from '@angular/core';
 import { PaintableComponent } from 'paintablejs/angular';
 
@@ -40,7 +54,6 @@ export class AppComponent {
   active = false;
   useEraser = false;
   thickness = 5;
-  smooth = false;
   color = '#FF0000';
 
   clear() {
@@ -65,7 +78,7 @@ export class AppComponent {
   }
 
   get image() {
-    return localStorage.getItem('/');
+    return localStorage.getItem('/') || undefined;
   }
 
   onSave(image: string) {
@@ -80,7 +93,7 @@ export class AppComponent {
 
 `app.module.ts`
 
-```js
+```ts
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 

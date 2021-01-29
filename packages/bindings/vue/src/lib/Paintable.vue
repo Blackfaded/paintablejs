@@ -32,7 +32,6 @@ export default class Paintable extends Vue {
   @Prop(Number) private readonly thicknessEraser: number | undefined;
   @Prop(Number) private readonly thickness: number | undefined;
   @Prop(String) private readonly color: string | undefined;
-  @Prop(Boolean) private readonly smooth: boolean | undefined;
   @Prop(String) private readonly image: string | undefined;
 
   paintable: null | PaintableCore = null;
@@ -43,31 +42,26 @@ export default class Paintable extends Vue {
   }
 
   @Watch("useEraser")
-  private useEraserChanged(useEraser: boolean | undefined) {
+  private useEraserChanged(useEraser: boolean) {
     this.paintable?.setUseEraser(useEraser);
   }
 
   @Watch("thicknessEraser")
-  private thicknessEraserChanged(thicknessEraser: number | undefined) {
+  private thicknessEraserChanged(thicknessEraser: number) {
     this.paintable?.setThicknessEraser(thicknessEraser);
   }
 
   @Watch("thickness")
-  private thicknessChanged(thickness: number | undefined) {
+  private thicknessChanged(thickness: number) {
     this.paintable?.setThickness(thickness);
   }
   @Watch("color")
-  private colorChanged(color: string | undefined) {
+  private colorChanged(color: string) {
     this.paintable?.setColor(color);
   }
 
-  @Watch("smooth")
-  private smoothChanged(smooth: boolean | undefined) {
-    this.paintable?.setSmooth(smooth);
-  }
-
   @Watch("scaleFactor")
-  private scaleFactorChanged(scaleFactor: number | undefined) {
+  private scaleFactorChanged(scaleFactor: number) {
     this.paintable?.setScaleFactor(scaleFactor);
   }
 
@@ -93,16 +87,10 @@ export default class Paintable extends Vue {
       useEraser: this.useEraser,
       thicknessEraser: this.thicknessEraser,
       thickness: this.thickness,
-      smooth: this.smooth,
       color: this.color,
       image: this.image,
-    });
-
-    this.paintable.events.on("save", (image: string) => {
-      this.$emit("save", image);
-    });
-    this.paintable.events.on("longPress", () => {
-      this.$emit("longPress");
+      onLongPress: () => this.$emit("longPress"),
+      onSave: (image) => this.$emit("save", image),
     });
   }
 }

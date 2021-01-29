@@ -5,7 +5,6 @@ import styles from './App.module.css';
 function App() {
   const paintableRef = useRef<PaintableRef>(null);
   const [color, setColor] = useState('#0000FF');
-  const [smooth, setSmooth] = useState(false);
   const [active, setActive] = useState(false);
   const [thickness, setThickness] = useState(5);
   const [useEraser, setUseEraser] = useState(false);
@@ -26,16 +25,6 @@ function App() {
         <button onClick={() => setUseEraser(!useEraser)}>
           {useEraser ? 'use pencil' : 'use eraser'}
         </button>
-        <label>
-          Smooth:
-          <input
-            type="checkbox"
-            checked={smooth}
-            onChange={(e) => {
-              setSmooth(e.target.checked);
-            }}
-          />
-        </label>
         <input
           type="color"
           value={color}
@@ -59,8 +48,7 @@ function App() {
         thickness={thickness}
         useEraser={useEraser}
         ref={paintableRef}
-        image={localStorage.getItem('/')}
-        smooth={smooth}
+        image={localStorage.getItem('/') || undefined}
         onSave={(image: string) => localStorage.setItem('/', image)}
         onLongPress={() => console.log('long')}
       >
