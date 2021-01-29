@@ -1,13 +1,13 @@
 {
   "name": "vue",
-  "version": "0.1.2",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "rollup -c -w",
     "build": "rollup -c"
   },
   "dependencies": {
-    "paintablejs": "0.1.2"
+    "paintablejs": "1.0.0"
   },
   "peerDependencies": {
     "vue": "^2.6.12",
