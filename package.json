@@ -27,7 +27,6 @@
     "build:vue": "yarn workspace vue build",
     "build:angular": "yarn workspace angular build",
     "build:demo": "yarn workspace example-angular build",
-    "build:docs": "yarn workspace docs build",
     "dev:all": "concurrently \"yarn dev:core\" \"yarn dev:react\" \"yarn dev:vue\"  \"yarn dev:angular\"",
     "dev:core": "yarn workspace core dev",
     "dev:react": "yarn workspace react dev",
