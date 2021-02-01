@@ -6,7 +6,7 @@
     "build": "rollup -c"
   },
   "dependencies": {
-    "paintablejs": "1.0.2"
+    "paintablejs": "1.0.3"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
