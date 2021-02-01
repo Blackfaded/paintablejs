@@ -8,3 +8,7 @@ slug: /
 ## What is Paintablejs?
 
 PaintableJs is a library that lets you draw on a canvas with various options and methods.
+
+## Demo
+
+You can find a live Demo [here](https://festive-swanson-8786a6.netlify.app/).

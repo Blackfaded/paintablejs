@@ -28,4 +28,3 @@ jobs:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID_DOCS }}
         with:
           args: deploy --dir=docs/build --prod
-          secrets: '["DEV_NETLIFY_AUTH_TOKEN", "NETLIFY_SITE_ID_DOCS"]'
