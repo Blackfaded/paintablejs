@@ -10,7 +10,7 @@ module.exports = {
       type: 'category',
       label: 'Getting Started',
       collapsed: false,
-      items: ['getting-started/installation', 'getting-started/props'],
+      items: ['getting-started/installation', 'getting-started/options'],
     },
 
     {
