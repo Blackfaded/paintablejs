@@ -31,7 +31,48 @@ yarn example:vue
 yarn example:angular
 ```
 
+- to make a production build, run `yarn build:all`
+
 ## Project structure
+
+```bash
+.
+├── .github
+│   └── workflows
+│       ├── build.yml # The flow to check if the build runs without errors
+│       ├── deploy.yml # The flow to deploy to npm
+│       ├── deploy_demo.yml # The flow to build the demo app and deploy it to netlify
+│       └── deploy_docs.yml # The flow to build the docs and deploy it to netlif
+├── docs # The docs(docusaurus) folder, which ist not part of the monorepo due to dependency conflicts
+├── package.json
+├── packages
+│   ├── bindings # New Framework bindings belong here
+│   │   ├── angular # The Angular bindings to the core module
+│   │   ├── react # The React bindings to the core module
+│   │   └── vue # The Vue bindings to the core module
+│   ├── core # This is the Core module
+│   │   ├── README.md
+│   │   ├── package.json
+│   │   ├── rollup.config.js # the core build flow
+│   │   ├── src # The core source files
+│   │   └── tsconfig.json
+│   ├── dist # This is the build app. For development purposes you can import it as `paintablejs` because of the monorepo structure. This folder gets deployed to NPM
+│   │   ├── README.md # The npm readme
+│   │   ├── angular
+│   │   ├── core
+│   │   ├── package.json
+│   │   ├── react
+│   │   └── vue
+│   └── examples # Examples belong here
+│       ├── angular # Angular example
+│       ├── core # Core example
+│       ├── react # React example
+│       └── vue # Vue example
+├── scripts
+│   ├── bumpDistVersion.js # Postversion Script, which bumps all versions of paintablejs in the monorepo
+│   └── clearDist.js # Script to clean the dist folder
+└── yarn.lock
+```
 
 ## Semantic commit messages
 
