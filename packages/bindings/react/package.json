@@ -1,6 +1,6 @@
 {
   "name": "react",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "private": true,
   "scripts": {
     "dev": "rollup -c -w",
@@ -11,7 +11,7 @@
     "react-dom": ">=17.0.1"
   },
   "dependencies": {
-    "paintablejs": "1.0.3"
+    "paintablejs": "1.0.4"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
