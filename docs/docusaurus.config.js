@@ -1,7 +1,7 @@
 module.exports = {
   title: 'Paintable.js',
   tagline: 'Make your canvas drawable and much more',
-  url: 'reverent-neumann-b3ceb6.netlify.app',
+  url: 'reverent-neumann-b3ceb6.netlify.app/',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
