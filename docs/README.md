@@ -1,36 +1,33 @@
-# Paintable.js
+# Website
 
-This Package enables you to write on a canvas and set different Options.
+This website is built using [Docusaurus 2](https://v2.docusaurus.io/), a modern static website generator.
 
-## Usage
+## Installation
 
-[Standalone](Core.md) ([Example](../packages/examples/core))
+```console
+yarn install
+```
 
-[React](React.md) ([Example](../packages/examples/react))
+## Local Development
 
-[Vue](Vue.md) ([Example](../packages/examples/vue))
+```console
+yarn start
+```
 
-[Angular](Angular.md) ([Example](../packages/examples/angular))
+This command starts a local development server and open up a browser window. Most changes are reflected live without having to restart the server.
 
-## Props
+## Build
 
-| name            |  type   | default | required | description                                                                                         |
-| --------------- | ------- | ------- | -------- | --------------------------------------------------------------------------------------------------- |
-| width           | number  |         | x        | the canvas width, can only be initialized and not be changed later                                  |
-| height          | number  |         | x        | the canvas height, can only be initialized and not be changed later                                 |
-| active          | boolean |         | x        | flag if the canvas is active (foreground/background)                                                |
-| scaleFactor     | number  | 1       |          | if you use the paintable in a scaled envirionment set the scalefactor to get the correct x/y values |
-| useEraser       | boolean | false   |          | flag if the eraser is enabled                                                                       |
-| thicknessEraser | number  | 40      |          | width of the eraser when it is active                                                               |
-| thickness       | number  | 10      |          | width of the pencil while drawing                                                                   |
-| color           | string  | #000000 |          | the pencilcolor MUST be a hex value. Other strings wont work right now                              |
-| image           | string  | null    |          | initial image (base64) drawn from the canvas                                                        |
+```console
+yarn build
+```
 
-## Events
+This command generates static content into the `build` directory and can be served using any static contents hosting service.
 
-For Event usage see the explicit usage docs mentioned above.
+## Deployment
 
-| name      |  type                   | description                                                                                                                                                                 |
-| --------- | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| save      | (image: string) => void | The event is emitted when the paintable state toggles from `active: true` -> `active: false`. When the event is emitted you get the current canvas image as a base64 string |
-| longPress | () => void              | The event is emitted when you longpress the canvas while it is active. Very useful to tigger a custom navigation.                                                           |
+```console
+GIT_USER=<Your GitHub username> USE_SSH=true yarn deploy
+```
+
+If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.

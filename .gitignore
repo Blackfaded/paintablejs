@@ -2,7 +2,7 @@
 # dependencies
 node_modules
 
-.eslintcache
+
 
 /.pnp
 .pnp.js
@@ -17,8 +17,6 @@ packages/dist/react/**/*
 !packages/dist/vue
 packages/dist/vue/**/*
 !packages/dist/**/package.json
-
-packages/examples/core/public/bundle.js
 
 
 /test

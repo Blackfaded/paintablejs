@@ -1,0 +1,30 @@
+name: Build Docs
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '12'
+      - name: Install dependencies
+        working-directory: ./docs
+        run: yarn
+      - name: Build Docs
+        working-directory: ./docs
+        run: yarn build
+      - name: Deploy docs on Netlify
+        uses: netlify/actions/cli@master
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID_DOCS }}
+        with:
+          args: deploy --dir=docs/build --prod
