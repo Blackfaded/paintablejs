@@ -31,6 +31,6 @@ jobs:
         with:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID_DEMO }}
-          NETLIFY_DEPLOY_TO_PROD: true,
-          build_command: "yarn build:demo",
-          build_directory: "packages/examples/angular/dist"
+          NETLIFY_DEPLOY_TO_PROD: true
+          build_command: 'yarn build:demo'
+          build_directory: 'packages/examples/angular/dist'
