@@ -3,7 +3,7 @@ name: Build Demo
 on:
   push:
     branches:
-      - develop
+      - master
 
 jobs:
   build:
