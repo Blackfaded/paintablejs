@@ -1,10 +1,12 @@
-# Vue Usage
+---
+id: usage-vue
+title: Vue Usage
+sidebar_label: Vue
+---
 
-For prop types see [Paintable](README.md)
+## template
 
-`App.vue`
-
-```ts
+```html
 <template>
   <div id="main">
     <div>
@@ -42,11 +44,14 @@ For prop types see [Paintable](README.md)
     </Paintable>
   </div>
 </template>
+```
 
-<script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
+## script
 
-import { Paintable } from "paintablejs/vue";
+```ts
+import { Component, Vue, Watch } from 'vue-property-decorator';
+
+import { Paintable } from 'paintablejs/vue';
 
 @Component({
   components: {
@@ -55,7 +60,7 @@ import { Paintable } from "paintablejs/vue";
 })
 export default class App extends Vue {
   useEraser = false;
-  color = "#FF0000";
+  color = '#FF0000';
   thickness = 5;
   active = false;
 
@@ -78,15 +83,15 @@ export default class App extends Vue {
   }
 
   get image() {
-    return localStorage.getItem("/") || undefined;
+    return localStorage.getItem('/') || undefined;
   }
 
   onSave(image: string) {
-    localStorage.setItem("/", image);
+    localStorage.setItem('/', image);
   }
 
   onLongPress() {
-    console.log("longPress");
+    console.log('longPress');
   }
 
   toggleEraser() {
@@ -98,9 +103,11 @@ export default class App extends Vue {
     this.active = !this.active;
   }
 }
-</script>
+```
 
-<style lang="scss" scoped>
+## style
+
+```scss
 #paintable-children {
   background-color: green;
   width: 100%;
@@ -109,5 +116,4 @@ export default class App extends Vue {
   justify-content: center;
   align-items: center;
 }
-</style>
 ```

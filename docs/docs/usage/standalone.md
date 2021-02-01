@@ -1,8 +1,10 @@
-# Core Usage
+---
+id: usage-standalone
+title: Standalone Usage
+sidebar_label: Standalone
+---
 
-For prop types see [Paintable](README.md)
-
-`index.html`
+## index.html
 
 ```html
 <!DOCTYPE html>
@@ -43,9 +45,9 @@ For prop types see [Paintable](README.md)
 </html>
 ```
 
-`main.js`
+## main.js
 
-```js
+```ts
 import { Paintable } from 'paintablejs';
 
 window.addEventListener('load', init);

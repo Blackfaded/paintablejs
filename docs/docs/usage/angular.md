@@ -1,8 +1,10 @@
-# Angular Usage
+---
+id: usage-angular
+title: Angular Usage
+sidebar_label: Angular
+---
 
-For prop types see [Paintable](README.md)
-
-`app.component.html`
+## app.component.html
 
 ```html
 <div>
@@ -36,7 +38,7 @@ For prop types see [Paintable](README.md)
 </div>
 ```
 
-`app.component.ts`
+## app.component.ts
 
 ```ts
 import { Component, ViewChild } from '@angular/core';
@@ -91,7 +93,7 @@ export class AppComponent {
 }
 ```
 
-`app.module.ts`
+## app.module.ts
 
 ```ts
 import { NgModule } from '@angular/core';

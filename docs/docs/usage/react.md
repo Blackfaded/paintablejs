@@ -1,10 +1,12 @@
-# React Usage
+---
+id: usage-react
+title: React Usage
+sidebar_label: React
+---
 
-For prop types see [Paintable](README.md)
+## app.tsx
 
-`app.tsx`
-
-```ts
+```tsx
 import React, { useRef, useState } from 'react';
 import { Paintable, PaintableRef } from 'paintablejs/react';
 import styles from './App.module.css';
@@ -68,7 +70,7 @@ function App() {
 export default App;
 ```
 
-`app.module.css`
+## app.module.css
 
 ```css
 .canvas-inner {

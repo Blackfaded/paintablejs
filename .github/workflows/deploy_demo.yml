@@ -1,0 +1,36 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '12'
+      - name: Install dependencies
+        run: yarn
+      - name: Build Library
+        run: yarn build:all
+      - name: Get package.json Version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@master
+        with:
+          path: packages/dist
+      - name: Echo package.json version
+        run: echo "${{ steps.package-version.outputs.current-version }}"
+      - name: Deploy demo on Netlify
+        uses: jsmrcaga/action-netlify-deploy@master
+        with:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID_DEMO }}
+          NETLIFY_DEPLOY_TO_PROD: true,
+          build_command: "yarn build:demo",
+          build_directory: "packages/examples/angular/dist"
