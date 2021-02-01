@@ -18,11 +18,14 @@ jobs:
       - name: Install dependencies
         working-directory: ./docs
         run: yarn
-      - name: Deploy docs on Netlify
+      - name: Build Docs
         working-directory: ./docs
-        uses: jsmrcaga/action-netlify-deploy@v1.1.0
-        with:
+        run: yarn build
+      - name: Deploy docs on Netlify
+        uses: netlify/actions/cli@master
+        env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID_DOCS }}
-          NETLIFY_DEPLOY_TO_PROD: true
-          build_directory: 'build'
+        with:
+          args: deploy --dir=docs/build --prod
+          secrets: '["DEV_NETLIFY_AUTH_TOKEN", "NETLIFY_SITE_ID_DOCS"]'
