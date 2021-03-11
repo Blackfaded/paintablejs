@@ -21,19 +21,22 @@
   ],
   "license": "MIT",
   "scripts": {
-    "build:all": "yarn build:core && concurrently \"yarn build:react\" \"yarn build:vue\" \"yarn build:angular\"",
-    "build:core": "yarn workspace core build",
-    "build:react": "yarn workspace react build",
-    "build:vue": "yarn workspace vue build",
-    "build:angular": "yarn workspace angular build",
+    "build:all": "yarn build:core && concurrently \"yarn build:react\" \"yarn build:vue\" \"yarn build:vue3\" \"yarn build:angular\"",
+    "build:core": "yarn workspace paintablejs-core build",
+    "build:react": "yarn workspace paintablejs-react build",
+    "build:vue": "yarn workspace paintablejs-vue build",
+    "build:vue3": "yarn workspace paintablejs-vue3 build",
+    "build:angular": "yarn workspace paintablejs-angular build",
     "build:demo": "yarn workspace example-angular build",
-    "dev:all": "concurrently \"yarn dev:core\" \"yarn dev:react\" \"yarn dev:vue\"  \"yarn dev:angular\"",
-    "dev:core": "yarn workspace core dev",
-    "dev:react": "yarn workspace react dev",
-    "dev:vue": "yarn workspace vue dev",
-    "dev:angular": "yarn workspace angular dev",
+    "dev:all": "concurrently \"yarn dev:core\" \"yarn dev:react\" \"yarn dev:vue\" \"yarn dev:vue3\" \"yarn dev:angular\"",
+    "dev:core": "yarn workspace paintablejs-core dev",
+    "dev:react": "yarn workspace paintablejs-react dev",
+    "dev:vue": "yarn workspace paintablejs-vue dev",
+    "dev:vue3": "yarn workspace paintablejs-vue3 dev",
+    "dev:angular": "yarn workspace paintablejs-angular dev",
     "example:react": "yarn workspace example-react serve",
     "example:vue": "yarn workspace example-vue serve",
+    "example:vue3": "yarn workspace example-vue3 serve",
     "example:angular": "yarn workspace example-angular serve",
     "example:core": "yarn workspace example-core serve",
     "clean:dist": "node ./scripts/clearDist.js",
@@ -46,6 +49,10 @@
       "packages/*",
       "packages/examples/*",
       "packages/bindings/*"
+    ],
+    "nohoist": [
+      "**/vue",
+      "**/rollup-plugin-vue"
     ]
   },
   "dependencies": {

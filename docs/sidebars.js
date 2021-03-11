@@ -21,6 +21,7 @@ module.exports = {
         'usage/usage-standalone',
         'usage/usage-react',
         'usage/usage-vue',
+        'usage/usage-vue3',
         'usage/usage-angular',
       ],
     },

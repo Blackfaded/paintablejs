@@ -1,5 +1,5 @@
 {
-  "name": "angular",
+  "name": "paintablejs-angular",
   "version": "1.0.4",
   "scripts": {
     "dev": "ng build --watch",

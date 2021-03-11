@@ -8,6 +8,8 @@ globby(
     'packages/dist/react/**/*',
     '!packages/dist/vue',
     'packages/dist/vue/**/*',
+    '!packages/dist/vue3',
+    'packages/dist/vue3/**/*',
     '!packages/dist/**/package.json',
   ],
   {
