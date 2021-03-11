@@ -1,0 +1,7 @@
+{
+  "name": "paintablejs/vue3",
+  "main": "js/index.js",
+  "module": "esm/index.js",
+  "types": "js/index.d.ts",
+  "sideEffects": false
+}
