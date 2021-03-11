@@ -1,7 +1,7 @@
 {
   "name": "paintablejs",
   "private": true,
-  "version": "1.1.0",
+  "version": "1.1.1",
   "author": "René Heinen <r.heinen@nanogiants.de>",
   "repository": {
     "type": "git",
