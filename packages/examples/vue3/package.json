@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "paintablejs": "1.0.4",
+    "paintablejs": "1.1.0",
     "vue": "^3.0.0"
   },
   "devDependencies": {
