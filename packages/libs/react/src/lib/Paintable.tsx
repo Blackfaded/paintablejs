@@ -7,7 +7,10 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Paintable as PaintableCore, PaintableOptions } from 'paintablejs';
+import {
+  Paintable as PaintableCore,
+  PaintableOptions,
+} from '@paintablejs/core';
 
 interface Props extends PaintableOptions {
   children?: ReactNode;

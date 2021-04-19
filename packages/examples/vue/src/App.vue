@@ -37,60 +37,69 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator';
+import Vue from 'vue';
 
 import { Paintable } from '@paintablejs/vue';
 
-@Component({
-  components: {
-    Paintable,
-  },
-})
-export default class App extends Vue {
-  useEraser = false;
-  color = '#FF0000';
-  thickness = 5;
-  active = false;
+interface Data {
+  useEraser: boolean;
+  color: string;
+  thickness: number;
+  active: boolean;
+  paintable: null | typeof Paintable;
+}
 
-  paintable: null | Paintable = null;
+export default Vue.extend({
+  components: { Paintable },
+  data(): Data {
+    return {
+      useEraser: false,
+      color: '#FF0000',
+      thickness: 5,
+      active: false,
+
+      paintable: null,
+    };
+  },
 
   mounted() {
-    this.paintable = (this.$refs.paintable as unknown) as Paintable;
-  }
+    this.paintable = (this.$refs.paintable as unknown) as typeof Paintable;
+  },
+  computed: {
+    image() {
+      return localStorage.getItem('/') || undefined;
+    },
+  },
+  methods: {
+    clear() {
+      this.paintable?.clear();
+    },
 
-  clear() {
-    this.paintable?.clear();
-  }
+    undo() {
+      this.paintable?.undo();
+    },
 
-  undo() {
-    this.paintable?.undo();
-  }
+    redo() {
+      this.paintable?.redo();
+    },
+    onSave(image: string) {
+      localStorage.setItem('/', image);
+    },
 
-  redo() {
-    this.paintable?.redo();
-  }
+    onLongPress() {
+      console.log('longPress');
+    },
 
-  get image() {
-    return localStorage.getItem('/') || undefined;
-  }
+    toggleEraser() {
+      this.useEraser = !this.useEraser;
+    },
 
-  onSave(image: string) {
-    localStorage.setItem('/', image);
-  }
-
-  onLongPress() {
-    console.log('longPress');
-  }
-
-  toggleEraser() {
-    this.useEraser = !this.useEraser;
-  }
-
-  toggleEdit() {
-    this.useEraser = false;
-    this.active = !this.active;
-  }
-}
+    toggleEdit() {
+      this.useEraser = false;
+      this.active = !this.active;
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>

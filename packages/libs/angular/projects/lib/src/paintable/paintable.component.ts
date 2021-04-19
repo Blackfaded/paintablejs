@@ -7,7 +7,10 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import { Paintable as PaintableCore, PaintableOptions } from 'paintablejs';
+import {
+  Paintable as PaintableCore,
+  PaintableOptions
+} from '@paintablejs/core';
 
 @Component({
   selector: 'paintable',

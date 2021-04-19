@@ -15,67 +15,90 @@
 </template>
 
 <script lang="ts">
-import { Paintable as PaintableCore } from "paintablejs";
+import Vue from 'vue';
+import { Paintable as PaintableCore } from '@paintablejs/core';
 
-import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+interface Data {
+  paintable: null | PaintableCore;
+}
 
-@Component({})
-export default class Paintable extends Vue {
-  // required
-  @Prop({ required: true }) private readonly width!: number;
-  @Prop({ required: true }) private readonly height!: number;
-  @Prop({ required: true }) private readonly active!: boolean;
+export default Vue.extend({
+  props: {
+    width: {
+      type: Number,
+      required: true,
+    },
+    height: {
+      type: Number,
+      required: true,
+    },
+    active: {
+      type: Boolean,
+      required: true,
+    },
+    scaleFactor: {
+      type: Number,
+      required: false,
+    },
+    useEraser: {
+      type: Boolean,
+      required: false,
+    },
+    thicknessEraser: {
+      type: Number,
+      required: false,
+    },
+    thickness: {
+      type: Number,
+      required: false,
+    },
+    color: {
+      type: String,
+      required: false,
+    },
+    image: {
+      type: String,
+      required: false,
+    },
+  },
+  data(): Data {
+    return {
+      paintable: null,
+    };
+  },
+  watch: {
+    active: function(active: boolean) {
+      this.paintable?.setActive(active);
+    },
+    useEraser: function(useEraser: boolean) {
+      this.paintable?.setUseEraser(useEraser);
+    },
+    thicknessEraser: function(thicknessEraser: number) {
+      this.paintable?.setThicknessEraser(thicknessEraser);
+    },
+    thickness: function(thickness: number) {
+      this.paintable?.setThickness(thickness);
+    },
+    color: function(color: string) {
+      this.paintable?.setColor(color);
+    },
+    scaleFactor: function(scaleFactor: number) {
+      this.paintable?.setScaleFactor(scaleFactor);
+    },
+  },
+  methods: {
+    undo() {
+      this.paintable?.undo();
+    },
 
-  //optional
-  @Prop(Number) private readonly scaleFactor: number | undefined;
-  @Prop(Boolean) private readonly useEraser: boolean | undefined;
-  @Prop(Number) private readonly thicknessEraser: number | undefined;
-  @Prop(Number) private readonly thickness: number | undefined;
-  @Prop(String) private readonly color: string | undefined;
-  @Prop(String) private readonly image: string | undefined;
+    redo() {
+      this.paintable?.redo();
+    },
 
-  paintable: null | PaintableCore = null;
-
-  @Watch("active")
-  private activeChanged(active: boolean) {
-    this.paintable?.setActive(active);
-  }
-
-  @Watch("useEraser")
-  private useEraserChanged(useEraser: boolean) {
-    this.paintable?.setUseEraser(useEraser);
-  }
-
-  @Watch("thicknessEraser")
-  private thicknessEraserChanged(thicknessEraser: number) {
-    this.paintable?.setThicknessEraser(thicknessEraser);
-  }
-
-  @Watch("thickness")
-  private thicknessChanged(thickness: number) {
-    this.paintable?.setThickness(thickness);
-  }
-  @Watch("color")
-  private colorChanged(color: string) {
-    this.paintable?.setColor(color);
-  }
-
-  @Watch("scaleFactor")
-  private scaleFactorChanged(scaleFactor: number) {
-    this.paintable?.setScaleFactor(scaleFactor);
-  }
-
-  undo() {
-    this.paintable?.undo();
-  }
-
-  redo() {
-    this.paintable?.redo();
-  }
-
-  clear() {
-    this.paintable?.clearCanvas();
-  }
+    clear() {
+      this.paintable?.clearCanvas();
+    },
+  },
 
   mounted() {
     this.paintable = new PaintableCore(this.$refs.canvas as HTMLCanvasElement, {
@@ -89,11 +112,11 @@ export default class Paintable extends Vue {
       thickness: this.thickness,
       color: this.color,
       image: this.image,
-      onLongPress: () => this.$emit("longPress"),
-      onSave: (image) => this.$emit("save", image),
+      onLongPress: () => this.$emit('longPress'),
+      onSave: (image) => this.$emit('save', image),
     });
-  }
-}
+  },
+});
 </script>
 
 <style lang="scss" scoped>
@@ -103,7 +126,4 @@ export default class Paintable extends Vue {
     height: 100%;
   }
 }
-</style>>
-
-
-
+</style>
