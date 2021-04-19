@@ -2,19 +2,21 @@ import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import typescript from 'rollup-plugin-typescript2';
-import postcss from 'rollup-plugin-postcss';
+import vue from 'rollup-plugin-vue';
+import copy from 'rollup-plugin-copy';
 
 export default {
+  external: ['@paintablejs/core'],
   input: 'src/index.ts',
   output: [
     {
       format: 'cjs',
-      file: '../../dist/react/js/index.js',
+      file: '../../dist/vue/js/index.js',
       sourcemap: false,
     },
     {
       format: 'esm',
-      file: '../../dist/react/esm/index.js',
+      file: '../../dist/vue/esm/index.js',
       sourcemap: false,
     },
   ],
@@ -23,5 +25,5 @@ export default {
     clearScreen: false,
     include: 'src/**/*',
   },
-  plugins: [peerDepsExternal(), resolve(), commonjs(), typescript(), postcss()],
+  plugins: [peerDepsExternal(), resolve(), commonjs(), typescript(), vue()],
 };

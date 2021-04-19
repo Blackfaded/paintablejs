@@ -7,17 +7,11 @@ node_modules
 /.pnp
 .pnp.js
 
-# testing
+
 /coverage
-# production
+
 packages/dist/**/*
-!packages/dist/README.md
-!packages/dist/react
-packages/dist/react/**/*
-!packages/dist/vue
-packages/dist/vue/**/*
-!packages/dist/vue3
-packages/dist/vue3/**/*
+!packages/dist/**/README.md
 !packages/dist/**/package.json
 
 

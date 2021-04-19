@@ -1,7 +1,14 @@
 {
-  "name": "paintablejs/vue",
+  "name": "@paintablejs/vue",
+  "version": "1.1.1",
   "main": "js/index.js",
   "module": "esm/index.js",
   "types": "js/index.d.ts",
-  "sideEffects": false
+  "sideEffects": false,
+  "dependencies": {
+    "@paintablejs/core": "1.1.1"
+  },
+  "peerDependencies": {
+    "vue": "^2.6.0"
+  }
 }

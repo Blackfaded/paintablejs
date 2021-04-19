@@ -4,7 +4,8 @@ const rimraf = require('rimraf');
 globby(
   [
     'packages/dist/**/*',
-    '!packages/dist/README.md',
+    '!packages/dist/core',
+    'packages/dist/core/**/*',
     '!packages/dist/react',
     'packages/dist/react/**/*',
     '!packages/dist/vue',

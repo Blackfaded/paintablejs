@@ -1,7 +1,6 @@
 # React Bindings
 
-This Package contains the React Bindings to use the `paintablejs` Library as a React component.  
-See [usage](../../../docs/React.md).
+This Package contains the React Bindings to use the `paintablejs` Library as a React component.
 
 ## Development
 

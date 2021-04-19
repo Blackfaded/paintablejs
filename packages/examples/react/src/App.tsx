@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Paintable, PaintableRef } from 'paintablejs/react';
+import { Paintable, PaintableRef } from '@paintablejs/react';
 import styles from './App.module.css';
 
 function App() {

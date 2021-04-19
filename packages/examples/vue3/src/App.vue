@@ -5,10 +5,10 @@
       <button @click="undo">Undo</button>
       <button @click="redo">Redo</button>
       <button @click="toggleEdit">
-        {{ active ? "save" : "edit" }}
+        {{ active ? 'save' : 'edit' }}
       </button>
       <button @click="toggleEraser">
-        {{ useEraser ? "use pencil" : "use eraser" }}
+        {{ useEraser ? 'use pencil' : 'use eraser' }}
       </button>
       <input type="color" v-model="color" />
       <input
@@ -38,17 +38,17 @@
 </template>
 
 <script lang="ts">
-import { Paintable } from "paintablejs/vue3";
+import { Paintable } from '@paintablejs/vue3';
 
-import { computed, defineComponent, onMounted, ref } from "vue";
+import { computed, defineComponent, onMounted, ref } from 'vue';
 
 export default defineComponent({
   components: {
-    Paintable
+    Paintable,
   },
   setup() {
     const useEraser = ref(false);
-    const color = ref("#FF0000");
+    const color = ref('#FF0000');
     const thickness = ref(5);
     const active = ref(false);
     const paintableRef = ref<any | null>(null);
@@ -69,15 +69,15 @@ export default defineComponent({
     };
 
     const image = computed(() => {
-      return localStorage.getItem("/") || undefined;
+      return localStorage.getItem('/') || undefined;
     });
 
     const onSave = (image: string) => {
-      localStorage.setItem("/", image);
+      localStorage.setItem('/', image);
     };
 
     const onLongPress = () => {
-      console.log("longPress");
+      console.log('longPress');
     };
 
     const toggleEraser = () => {
@@ -102,9 +102,9 @@ export default defineComponent({
       color,
       thickness,
       active,
-      paintableRef
+      paintableRef,
     };
-  }
+  },
 });
 </script>
 
@@ -118,5 +118,3 @@ export default defineComponent({
   align-items: center;
 }
 </style>
-
-

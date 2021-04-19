@@ -1,7 +1,6 @@
 # Vue Bindings
 
-This Package contains the Vue Bindings to use the `paintablejs` Library as a Vue component.  
-See [usage](../../../docs/Vue.md).
+This Package contains the Vue Bindings to use the `paintablejs` Library as a Vue component.
 
 ## Development
 

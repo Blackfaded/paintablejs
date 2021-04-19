@@ -5,10 +5,10 @@
       <button @click="undo">Undo</button>
       <button @click="redo">Redo</button>
       <button @click="toggleEdit">
-        {{ active ? "save" : "edit" }}
+        {{ active ? 'save' : 'edit' }}
       </button>
       <button @click="toggleEraser">
-        {{ useEraser ? "use pencil" : "use eraser" }}
+        {{ useEraser ? 'use pencil' : 'use eraser' }}
       </button>
       <input type="color" v-model="color" />
       <input
@@ -37,9 +37,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue, Watch } from 'vue-property-decorator';
 
-import { Paintable } from "paintablejs/vue";
+import { Paintable } from '@paintablejs/vue';
 
 @Component({
   components: {
@@ -48,7 +48,7 @@ import { Paintable } from "paintablejs/vue";
 })
 export default class App extends Vue {
   useEraser = false;
-  color = "#FF0000";
+  color = '#FF0000';
   thickness = 5;
   active = false;
 
@@ -71,15 +71,15 @@ export default class App extends Vue {
   }
 
   get image() {
-    return localStorage.getItem("/") || undefined;
+    return localStorage.getItem('/') || undefined;
   }
 
   onSave(image: string) {
-    localStorage.setItem("/", image);
+    localStorage.setItem('/', image);
   }
 
   onLongPress() {
-    console.log("longPress");
+    console.log('longPress');
   }
 
   toggleEraser() {
@@ -103,5 +103,3 @@ export default class App extends Vue {
   align-items: center;
 }
 </style>
-
-

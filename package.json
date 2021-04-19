@@ -48,7 +48,8 @@
     "packages": [
       "packages/*",
       "packages/examples/*",
-      "packages/bindings/*"
+      "packages/libs/*",
+      "packages/dist/*"
     ],
     "nohoist": [
       "**/vue",

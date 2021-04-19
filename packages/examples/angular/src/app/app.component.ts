@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { PaintableComponent } from 'paintablejs/angular';
+import { PaintableComponent } from '@paintablejs/angular';
 
 @Component({
   selector: 'app-root',

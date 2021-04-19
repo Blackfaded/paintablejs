@@ -3,7 +3,7 @@
     id="vue-paintable-container"
     :style="{
       width: `${width}px`,
-      height: `${height}px`
+      height: `${height}px`,
     }"
   >
     <canvas ref="canvas" :width="width" :height="height"></canvas>
@@ -15,93 +15,93 @@
 </template>
 
 <script lang="ts">
-import { Paintable as PaintableCore } from "paintablejs";
-import { defineComponent, onMounted, ref, watch } from "vue";
+import { Paintable as PaintableCore } from '@paintablejs/core';
+import { defineComponent, onMounted, ref, watch } from 'vue';
 
 export default defineComponent({
   props: {
     // required
     width: {
       type: Number,
-      required: true
+      required: true,
     },
     height: {
       type: Number,
-      required: true
+      required: true,
     },
     active: {
       type: Boolean,
-      required: true
+      required: true,
     },
     //optional
     scaleFactor: {
       type: Number,
-      required: false
+      required: false,
     },
     useEraser: {
       type: Boolean,
-      required: false
+      required: false,
     },
     thicknessEraser: {
       type: Number,
-      required: false
+      required: false,
     },
     thickness: {
       type: Number,
-      required: false
+      required: false,
     },
     color: {
       type: String,
-      required: false
+      required: false,
     },
     image: {
       type: String,
-      required: false
-    }
+      required: false,
+    },
   },
-  emits: ["longPress", "save"],
+  emits: ['longPress', 'save'],
   setup(props, { emit }) {
     const paintable = ref<null | PaintableCore>(null);
     const canvas = ref<HTMLCanvasElement | null>(null);
 
     watch(
       () => props.active,
-      active => {
+      (active) => {
         paintable.value?.setActive(active!);
       }
     );
 
     watch(
       () => props.useEraser,
-      useEraser => {
+      (useEraser) => {
         paintable.value?.setUseEraser(useEraser!);
       }
     );
 
     watch(
       () => props.thicknessEraser,
-      thicknessEraser => {
+      (thicknessEraser) => {
         paintable.value?.setThicknessEraser(thicknessEraser!);
       }
     );
 
     watch(
       () => props.thickness,
-      thickness => {
+      (thickness) => {
         paintable.value?.setThickness(thickness!);
       }
     );
 
     watch(
       () => props.color,
-      color => {
+      (color) => {
         paintable.value?.setColor(color!);
       }
     );
 
     watch(
       () => props.scaleFactor,
-      scaleFactor => {
+      (scaleFactor) => {
         paintable.value?.setScaleFactor(scaleFactor!);
       }
     );
@@ -119,7 +119,7 @@ export default defineComponent({
     };
 
     onMounted(() => {
-      console.log(",sf", canvas.value);
+      console.log(',sf', canvas.value);
       paintable.value = new PaintableCore(canvas.value as HTMLCanvasElement, {
         width: props.width,
         height: props.height,
@@ -130,8 +130,8 @@ export default defineComponent({
         thickness: props.thickness,
         color: props.color,
         image: props.image,
-        onLongPress: () => emit("longPress"),
-        onSave: image => emit("save", image)
+        onLongPress: () => emit('longPress'),
+        onSave: (image) => emit('save', image),
       });
       console.log(paintable.value);
     });
@@ -140,13 +140,8 @@ export default defineComponent({
       canvas,
       undo,
       redo,
-      clear
+      clear,
     };
-  }
+  },
 });
 </script>
-
-
-
-
-

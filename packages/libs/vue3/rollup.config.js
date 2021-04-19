@@ -5,16 +5,17 @@ import typescript from 'rollup-plugin-typescript2';
 import vue from 'rollup-plugin-vue';
 
 export default {
+  external: ['@paintablejs/core'],
   input: 'src/index.ts',
   output: [
     {
       format: 'cjs',
-      file: '../../dist/vue/js/index.js',
+      file: '../../dist/vue3/js/index.js',
       sourcemap: false,
     },
     {
       format: 'esm',
-      file: '../../dist/vue/esm/index.js',
+      file: '../../dist/vue3/esm/index.js',
       sourcemap: false,
     },
   ],
@@ -23,5 +24,5 @@ export default {
     clearScreen: false,
     include: 'src/**/*',
   },
-  plugins: [peerDepsExternal(), resolve(), commonjs(), typescript(), vue()],
+  plugins: [peerDepsExternal(), resolve(), commonjs(), vue(), typescript()],
 };
