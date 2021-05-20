@@ -26,11 +26,39 @@ jobs:
           path: packages/dist
       - name: Echo package.json version
         run: echo "${{ steps.package-version.outputs.current-version }}"
-      - name: Publish to Npm
+      - name: Publish Core to Npm
         id: publish
         uses: JS-DevTools/npm-publish@v1
         with:
-          package: ./packages/dist/package.json
+          package: ./packages/dist/core/package.json
+          token: ${{ secrets.NPM_TOKEN }}
+          check-version: 'true'
+      - name: Publish Angular to Npm
+        id: publish
+        uses: JS-DevTools/npm-publish@v1
+        with:
+          package: ./packages/dist/angular/package.json
+          token: ${{ secrets.NPM_TOKEN }}
+          check-version: 'true'
+      - name: Publish React to Npm
+        id: publish
+        uses: JS-DevTools/npm-publish@v1
+        with:
+          package: ./packages/dist/react/package.json
+          token: ${{ secrets.NPM_TOKEN }}
+          check-version: 'true'
+      - name: Publish Vue to Npm
+        id: publish
+        uses: JS-DevTools/npm-publish@v1
+        with:
+          package: ./packages/dist/vue/package.json
+          token: ${{ secrets.NPM_TOKEN }}
+          check-version: 'true'
+      - name: Publish Vue3 to Npm
+        id: publish
+        uses: JS-DevTools/npm-publish@v1
+        with:
+          package: ./packages/dist/vue3/package.json
           token: ${{ secrets.NPM_TOKEN }}
           check-version: 'true'
       - name: Show version change

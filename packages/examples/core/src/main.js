@@ -1,4 +1,4 @@
-import { Paintable } from 'paintablejs';
+import { Paintable } from '@paintablejs/core';
 
 window.addEventListener('load', init);
 

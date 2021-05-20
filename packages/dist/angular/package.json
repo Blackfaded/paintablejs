@@ -1,0 +1,20 @@
+{
+  "name": "@paintablejs/angular",
+  "version": "1.1.1",
+  "peerDependencies": {
+    "@angular/common": "^11.1.0",
+    "@angular/core": "^11.1.0"
+  },
+  "dependencies": {
+    "tslib": "^2.0.0",
+    "@paintablejs/core": "1.1.1"
+  },
+  "main": "bundles/paintablejs-angular.umd.js",
+  "module": "fesm2015/paintablejs-angular.js",
+  "es2015": "fesm2015/paintablejs-angular.js",
+  "esm2015": "esm2015/paintablejs-angular.js",
+  "fesm2015": "fesm2015/paintablejs-angular.js",
+  "typings": "paintablejs-angular.d.ts",
+  "metadata": "paintablejs-angular.metadata.json",
+  "sideEffects": false
+}
